@@ -196,20 +196,20 @@ function AiNotepad() {
 function FeaturePill({ label, avatar, icon, ai }: { label: string; avatar?: string; icon?: string; ai?: boolean }) {
   return (
     <div
-      className="flex min-w-12 shrink-0 items-center justify-center gap-2 rounded-full border py-2 pl-2 pr-3"
-      style={{ borderColor: ai ? AI_BORDER : 'var(--border-resting)' }}
+      className="flex min-w-12 shrink-0 items-center justify-center gap-2 rounded-full py-2 pl-2 pr-3"
+      style={{ borderWidth: ai ? 1 : 0.5, borderStyle: 'solid', borderColor: ai ? AI_BORDER : 'var(--border-resting)' }}
     >
       {avatar ? (
         <img
           src={avatar}
           alt=""
           className="size-8 shrink-0 rounded-full object-cover"
-          style={ai ? { boxShadow: `0 0 0 0.8px ${AI_BORDER}` } : undefined}
+          style={{ boxShadow: `0 0 0 0.8px ${ai ? AI_BORDER : '#f1e7e4'}` }}
         />
       ) : (
         <div
-          className="flex size-8 shrink-0 items-center justify-center rounded-full border"
-          style={{ background: 'var(--border-default)', borderColor: '#f1e7e4' }}
+          className="flex size-8 shrink-0 items-center justify-center rounded-full"
+          style={{ background: 'var(--border-default)', borderWidth: 0.8, borderStyle: 'solid', borderColor: '#f1e7e4' }}
         >
           <img src={icon} alt="" className="size-4" />
         </div>
@@ -334,9 +334,13 @@ export function SpecsSection() {
   const [lotSize, setLotSize] = useState('24,500')
 
   return (
-    <div className="flex w-full flex-col items-start gap-4 px-4">
-      <MlsSearchField />
-      <AiNotepad />
+    <div className="flex w-full flex-col items-start px-4">
+      <div className="w-full pb-4">
+        <MlsSearchField />
+      </div>
+      <div className="w-full pb-4">
+        <AiNotepad />
+      </div>
       <div className="flex w-full flex-col items-start">
         <EditableSpecRow
           icon={iconBed}
