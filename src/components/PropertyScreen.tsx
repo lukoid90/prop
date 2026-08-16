@@ -8,17 +8,22 @@ import { DigDeeperSection } from './DigDeeperSection'
 import { NotesSection } from './NotesSection'
 import { ExploreAreaSection } from './ExploreAreaSection'
 import type { Note } from '../types'
+import type { PriceDropAlert } from './AddAlertSheet'
 
 export function PropertyScreen({
   notes,
   onOpenAddNote,
   activeTab,
   onTabChange,
+  priceDropAlert,
+  onOpenPriceDropAlert,
 }: {
   notes: Note[]
   onOpenAddNote: () => void
   activeTab: string
   onTabChange: (tab: string) => void
+  priceDropAlert: PriceDropAlert | null
+  onOpenPriceDropAlert: () => void
 }) {
   return (
     <div className="flex flex-col gap-6 pb-[120px]">
@@ -27,7 +32,7 @@ export function PropertyScreen({
       <SubjectDetails />
       <div className="flex flex-col gap-8">
         <ActiveSection />
-        <AlertsSection />
+        <AlertsSection priceDropAlert={priceDropAlert} onOpenPriceDropAlert={onOpenPriceDropAlert} />
         <div className="flex flex-col gap-10">
           <SendToClientSection />
           <DigDeeperSection />
