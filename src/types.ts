@@ -10,3 +10,10 @@ export interface PriceDropAlertEntry {
   unit: '%' | '$'
   value: number
 }
+
+export interface StatusAlertEntry {
+  id: string
+  date: string
+  statuses: string[]
+  removeWhenSold: boolean
+}

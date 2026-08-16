@@ -9,7 +9,7 @@ import { NotesSection } from './NotesSection'
 import { ExploreAreaSection } from './ExploreAreaSection'
 import { SpecsSection } from './SpecsSection'
 import { RecordsSection } from './RecordsSection'
-import type { Note, PriceDropAlertEntry } from '../types'
+import type { Note, PriceDropAlertEntry, StatusAlertEntry } from '../types'
 
 export function PropertyScreen({
   notes,
@@ -18,6 +18,8 @@ export function PropertyScreen({
   onTabChange,
   priceDropAlerts,
   onOpenPriceDropAlert,
+  statusAlerts,
+  onOpenStatusAlert,
   onShareProperty,
 }: {
   notes: Note[]
@@ -26,6 +28,8 @@ export function PropertyScreen({
   onTabChange: (tab: string) => void
   priceDropAlerts: PriceDropAlertEntry[]
   onOpenPriceDropAlert: () => void
+  statusAlerts: StatusAlertEntry[]
+  onOpenStatusAlert: () => void
   onShareProperty: () => void
 }) {
   if (activeTab === 'Specs') {
@@ -52,8 +56,8 @@ export function PropertyScreen({
       <PropertyNav active={activeTab} onChange={onTabChange} />
       <SubjectDetails />
       <div className="flex flex-col gap-8">
-        <ActiveSection priceDropAlerts={priceDropAlerts} />
-        <AlertsSection onOpenPriceDropAlert={onOpenPriceDropAlert} />
+        <ActiveSection priceDropAlerts={priceDropAlerts} statusAlerts={statusAlerts} />
+        <AlertsSection onOpenPriceDropAlert={onOpenPriceDropAlert} onOpenStatusAlert={onOpenStatusAlert} />
         <div className="flex flex-col gap-10">
           <SendToClientSection onShareProperty={onShareProperty} />
           <DigDeeperSection />

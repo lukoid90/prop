@@ -5,10 +5,11 @@ import { PropertyDock } from './components/PropertyDock'
 import { PropertyScreen } from './components/PropertyScreen'
 import { NoteSheet } from './components/NoteSheet'
 import { AddAlertSheet, type PriceDropAlert } from './components/AddAlertSheet'
+import { StatusAlertSheet, type StatusAlert } from './components/StatusAlertSheet'
 import { ShareSheet } from './components/ShareSheet'
 import { NAV_TABS } from './components/PropertyNav'
 import { formatEntryTimestamp } from './lib/formatEntryTimestamp'
-import type { Note, PriceDropAlertEntry } from './types'
+import type { Note, PriceDropAlertEntry, StatusAlertEntry } from './types'
 
 function App() {
   const [notes, setNotes] = useState<Note[]>([])
@@ -16,6 +17,8 @@ function App() {
   const [activeTab, setActiveTab] = useState(NAV_TABS[0])
   const [priceDropAlerts, setPriceDropAlerts] = useState<PriceDropAlertEntry[]>([])
   const [isAddingAlert, setIsAddingAlert] = useState(false)
+  const [statusAlerts, setStatusAlerts] = useState<StatusAlertEntry[]>([])
+  const [isAddingStatusAlert, setIsAddingStatusAlert] = useState(false)
   const [isSharing, setIsSharing] = useState(false)
 
   const handleSaveNote = (message: string) => {
@@ -28,6 +31,12 @@ function App() {
     const date = formatEntryTimestamp(new Date())
     setPriceDropAlerts((prev) => [{ id: crypto.randomUUID(), date, ...alert }, ...prev])
     setIsAddingAlert(false)
+  }
+
+  const handleSaveStatusAlert = (alert: StatusAlert) => {
+    const date = formatEntryTimestamp(new Date())
+    setStatusAlerts((prev) => [{ id: crypto.randomUUID(), date, ...alert }, ...prev])
+    setIsAddingStatusAlert(false)
   }
 
   return (
@@ -45,6 +54,11 @@ function App() {
           <>
             <NoteSheet open={isAddingNote} onClose={() => setIsAddingNote(false)} onSave={handleSaveNote} />
             <AddAlertSheet open={isAddingAlert} onClose={() => setIsAddingAlert(false)} onSave={handleSaveAlert} />
+            <StatusAlertSheet
+              open={isAddingStatusAlert}
+              onClose={() => setIsAddingStatusAlert(false)}
+              onSave={handleSaveStatusAlert}
+            />
             <ShareSheet open={isSharing} onClose={() => setIsSharing(false)} />
           </>
         }
@@ -56,6 +70,8 @@ function App() {
           onTabChange={setActiveTab}
           priceDropAlerts={priceDropAlerts}
           onOpenPriceDropAlert={() => setIsAddingAlert(true)}
+          statusAlerts={statusAlerts}
+          onOpenStatusAlert={() => setIsAddingStatusAlert(true)}
           onShareProperty={() => setIsSharing(true)}
         />
       </DeviceFrame>

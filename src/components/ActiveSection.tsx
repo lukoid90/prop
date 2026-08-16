@@ -2,7 +2,7 @@ import { PencilSimple } from '@phosphor-icons/react'
 import { NotepadRow } from './NotepadRow'
 import statusChange from '../assets/images/tile-status-change.png'
 import priceDrop from '../assets/images/tile-price-drop.png'
-import type { PriceDropAlertEntry } from '../types'
+import type { PriceDropAlertEntry, StatusAlertEntry } from '../types'
 
 const ROW_BG = '#eff2f1'
 
@@ -10,7 +10,17 @@ function describeAlert(alert: PriceDropAlertEntry) {
   return alert.unit === '%' ? `${alert.value}% drop` : `$${alert.value.toLocaleString()} drop`
 }
 
-export function ActiveSection({ priceDropAlerts }: { priceDropAlerts: PriceDropAlertEntry[] }) {
+function describeStatusAlert(alert: StatusAlertEntry) {
+  return alert.statuses.length === 4 ? 'Any status change' : alert.statuses.join(', ')
+}
+
+export function ActiveSection({
+  priceDropAlerts,
+  statusAlerts,
+}: {
+  priceDropAlerts: PriceDropAlertEntry[]
+  statusAlerts: StatusAlertEntry[]
+}) {
   return (
     <div className="flex w-full flex-col items-start gap-6 px-4">
       <p className="text-[20px] font-bold leading-[1.26] text-[var(--content-primary)]">Active</p>
@@ -21,6 +31,16 @@ export function ActiveSection({ priceDropAlerts }: { priceDropAlerts: PriceDropA
             avatarImage={priceDrop}
             topLine={{ text: alert.date, size: 'small' }}
             bottomLine={{ text: describeAlert(alert), size: 'large' }}
+            background={ROW_BG}
+            action={<PencilSimple size={20} />}
+          />
+        ))}
+        {statusAlerts.map((alert) => (
+          <NotepadRow
+            key={alert.id}
+            avatarImage={statusChange}
+            topLine={{ text: alert.date, size: 'small' }}
+            bottomLine={{ text: describeStatusAlert(alert), size: 'large' }}
             background={ROW_BG}
             action={<PencilSimple size={20} />}
           />
