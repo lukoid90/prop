@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Plus, Sparkle } from '@phosphor-icons/react'
+import { Plus, Sparkle, XCircle } from '@phosphor-icons/react'
 import iconBed from '../assets/icons/specs/icon-bed.svg'
 import iconBathtub from '../assets/icons/specs/icon-bathtub.svg'
 import iconFloorplan from '../assets/icons/specs/icon-floorplan.svg'
@@ -130,6 +130,7 @@ function EditableSpecRow({
   short?: boolean
   border?: boolean
 }) {
+  const [isFocused, setIsFocused] = useState(false)
   return (
     <div
       className={`flex w-full items-center gap-2.5 ${short ? 'h-12 pb-2' : 'h-14 py-2'} ${border ? 'border-b border-dashed' : ''}`}
@@ -144,13 +145,27 @@ function EditableSpecRow({
       <p className="w-[108px] shrink-0 text-[15px] leading-[1.26] tracking-[-0.5px] opacity-65" style={{ color: 'var(--content-primary)' }}>
         {label}
       </p>
-      <input
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        inputMode="numeric"
-        className="min-w-0 flex-1 border-0 bg-transparent p-0 text-[15px] leading-[1.26] tracking-[-0.5px] outline-none"
-        style={{ color: 'var(--content-primary)', caretColor: AI_BORDER }}
-      />
+      <div className="flex min-w-0 flex-1 items-center gap-2">
+        <input
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          inputMode="numeric"
+          className="min-w-0 flex-1 border-0 bg-transparent p-0 text-[15px] leading-[1.26] tracking-[-0.5px] outline-none"
+          style={{ color: 'var(--content-primary)', caretColor: AI_BORDER }}
+        />
+        {isFocused && (
+          <button
+            type="button"
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={() => onChange('')}
+            className="flex size-5 shrink-0 items-center justify-center"
+          >
+            <XCircle size={20} color="var(--content-tertiary)" />
+          </button>
+        )}
+      </div>
     </div>
   )
 }
