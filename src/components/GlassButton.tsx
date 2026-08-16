@@ -1,36 +1,44 @@
+import LiquidGlass from 'liquid-glass-react'
 import type { ReactNode } from 'react'
-
-const VARIANTS = {
-  light: {
-    background: 'rgba(253,252,252,0.45)',
-    color: 'var(--content-primary)',
-  },
-  dark: {
-    background: 'rgba(18,18,18,0.55)',
-    color: 'var(--content-inverse)',
-  },
-} as const
 
 export function GlassButton({
   variant = 'light',
+  width,
+  height,
+  padding = '10px',
+  cornerRadius = 999,
   className = '',
   children,
 }: {
-  variant?: keyof typeof VARIANTS
+  variant?: 'light' | 'dark'
+  width: number
+  height: number
+  padding?: string
+  cornerRadius?: number
   className?: string
   children: ReactNode
 }) {
-  const v = VARIANTS[variant]
   return (
-    <div
-      className={`flex items-center justify-center gap-1.5 rounded-full backdrop-blur-md ${className}`}
-      style={{
-        background: v.background,
-        color: v.color,
-        boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.25), 0 1px 2px rgba(18,18,18,0.06)',
-      }}
-    >
-      {children}
+    <div className={`relative shrink-0 ${className}`} style={{ width, height }}>
+      <div
+        className="absolute inset-0"
+        style={{
+          borderRadius: cornerRadius,
+          background: variant === 'dark' ? 'rgba(18,18,18,0.4)' : 'rgba(253,252,252,0.3)',
+        }}
+      />
+      <LiquidGlass
+        style={{ position: 'absolute' }}
+        padding={padding}
+        cornerRadius={cornerRadius}
+        overLight={false}
+        blurAmount={0.12}
+        saturation={variant === 'dark' ? 115 : 150}
+        aberrationIntensity={1.5}
+        elasticity={0.15}
+      >
+        <div className="flex items-center justify-center gap-1.5">{children}</div>
+      </LiquidGlass>
     </div>
   )
 }
