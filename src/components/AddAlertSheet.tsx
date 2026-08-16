@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { X, TrendDown } from '@phosphor-icons/react'
 import propertyPhoto from '../assets/images/property-photo.png'
+import { GlassButton } from './GlassButton'
 
 const SHEET_EASING = 'cubic-bezier(0.32, 0.72, 0, 1)'
 const SHEET_DURATION_MS = 420
@@ -78,26 +79,19 @@ export function AddAlertSheet({
         </div>
 
         <div className="flex w-full shrink-0 items-center justify-between px-4 pb-3">
-          <button
-            type="button"
-            aria-label="Close"
-            onClick={onClose}
-            className="flex size-10 items-center justify-center rounded-full"
-            style={{ background: 'rgba(253,252,252,0.6)' }}
-          >
+          <GlassButton aria-label="Close" onClick={onClose} className="size-10">
             <X size={17} color="var(--content-primary)" />
-          </button>
-          <button
-            type="button"
+          </GlassButton>
+          <GlassButton
+            variant="dark"
             onClick={() => canSave && onSave({ unit, value: activeValue })}
             disabled={!canSave}
-            className="flex h-10 items-center justify-center rounded-full px-4 disabled:opacity-40"
-            style={{ background: 'rgba(18,18,18,0.6)' }}
+            className="h-10 px-4"
           >
             <span className="text-[15px] font-bold leading-[1.26] tracking-[-0.5px] text-[var(--content-inverse)]">
               Set alert
             </span>
-          </button>
+          </GlassButton>
         </div>
 
         <div className="flex w-full shrink-0 items-center gap-4 p-4">
