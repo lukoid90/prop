@@ -26,6 +26,7 @@ import featureOutdoorDining from '../assets/images/specs/feature-outdoor-dining.
 
 const AI_BORDER = '#9875a9'
 const AI_GRADIENT = 'linear-gradient(203deg, #9875a9 31.8%, #7f5a90 65.8%, #694b77 95.5%)'
+const AI_BORDER_GRADIENT = 'linear-gradient(226deg, #9875a9 31.82%, #7f5a90 65.81%, #694b77 95.49%)'
 const DASHED_BORDER = 'rgba(13,12,12,0.24)'
 
 function formatThousands(raw: string) {
@@ -197,7 +198,16 @@ function FeaturePill({ label, avatar, icon, ai }: { label: string; avatar?: stri
   return (
     <div
       className="flex min-w-12 shrink-0 items-center justify-center gap-2 rounded-full py-2 pl-2 pr-3"
-      style={{ borderWidth: ai ? 1 : 0.5, borderStyle: 'solid', borderColor: ai ? AI_BORDER : 'var(--border-resting)' }}
+      style={
+        ai
+          ? {
+              border: '1px solid transparent',
+              backgroundImage: `linear-gradient(white, white), ${AI_BORDER_GRADIENT}`,
+              backgroundOrigin: 'border-box',
+              backgroundClip: 'padding-box, border-box',
+            }
+          : { borderWidth: 0.5, borderStyle: 'solid', borderColor: 'var(--border-resting)' }
+      }
     >
       {avatar ? (
         <img
