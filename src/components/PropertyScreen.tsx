@@ -7,6 +7,7 @@ import { SendToClientSection } from './SendToClientSection'
 import { DigDeeperSection } from './DigDeeperSection'
 import { NotesSection } from './NotesSection'
 import { ExploreAreaSection } from './ExploreAreaSection'
+import { SpecsSection } from './SpecsSection'
 import type { Note, PriceDropAlertEntry } from '../types'
 
 export function PropertyScreen({
@@ -29,16 +30,20 @@ export function PropertyScreen({
       <PropertyPhoto />
       <PropertyNav active={activeTab} onChange={onTabChange} />
       <SubjectDetails />
-      <div className="flex flex-col gap-8">
-        <ActiveSection priceDropAlerts={priceDropAlerts} />
-        <AlertsSection onOpenPriceDropAlert={onOpenPriceDropAlert} />
-        <div className="flex flex-col gap-10">
-          <SendToClientSection />
-          <DigDeeperSection />
-          <NotesSection notes={notes} onOpenAdd={onOpenAddNote} />
-          <ExploreAreaSection />
+      {activeTab === 'Specs' ? (
+        <SpecsSection />
+      ) : (
+        <div className="flex flex-col gap-8">
+          <ActiveSection priceDropAlerts={priceDropAlerts} />
+          <AlertsSection onOpenPriceDropAlert={onOpenPriceDropAlert} />
+          <div className="flex flex-col gap-10">
+            <SendToClientSection />
+            <DigDeeperSection />
+            <NotesSection notes={notes} onOpenAdd={onOpenAddNote} />
+            <ExploreAreaSection />
+          </div>
         </div>
-      </div>
+      )}
     </div>
   )
 }
