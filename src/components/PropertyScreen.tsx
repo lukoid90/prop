@@ -9,11 +9,21 @@ import { NotesSection } from './NotesSection'
 import { ExploreAreaSection } from './ExploreAreaSection'
 import type { Note } from '../types'
 
-export function PropertyScreen({ notes, onOpenAddNote }: { notes: Note[]; onOpenAddNote: () => void }) {
+export function PropertyScreen({
+  notes,
+  onOpenAddNote,
+  activeTab,
+  onTabChange,
+}: {
+  notes: Note[]
+  onOpenAddNote: () => void
+  activeTab: string
+  onTabChange: (tab: string) => void
+}) {
   return (
     <div className="flex flex-col gap-6 pb-[120px]">
       <PropertyPhoto />
-      <PropertyNav />
+      <PropertyNav active={activeTab} onChange={onTabChange} />
       <SubjectDetails />
       <div className="flex flex-col gap-8">
         <ActiveSection />

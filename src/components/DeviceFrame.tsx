@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import { useState, type ReactNode } from 'react'
 
 const WIDTH = 402
 const HEIGHT = 874
@@ -6,6 +6,14 @@ const BEZEL = 9
 
 const FRAME_GRADIENT =
   'linear-gradient(155deg, #3a3a3d 0%, #1c1c1e 12%, #101012 50%, #1c1c1e 88%, #3a3a3d 100%)'
+
+// Hero photo is 442px tall; the header covers the top 106px of the screen, so
+// the photo has fully scrolled past the header once scrollTop reaches 442-106.
+const HERO_HEIGHT = 442
+const HEADER_HEIGHT = 106
+const FADE_SPAN = 70
+const FADE_END = HERO_HEIGHT - HEADER_HEIGHT + FADE_SPAN / 2
+const FADE_START = FADE_END - FADE_SPAN
 
 function SideButton({ side, top, height }: { side: 'left' | 'right'; top: number; height: number }) {
   return (
@@ -29,11 +37,19 @@ export function DeviceFrame({
   overlay,
   children,
 }: {
-  header: ReactNode
+  header: (scrollProgress: number) => ReactNode
   dock: ReactNode
   overlay?: ReactNode
   children: ReactNode
 }) {
+  const [scrollProgress, setScrollProgress] = useState(0)
+
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const y = e.currentTarget.scrollTop
+    const t = Math.min(1, Math.max(0, (y - FADE_START) / (FADE_END - FADE_START)))
+    setScrollProgress(t)
+  }
+
   return (
     <div
       className="relative shrink-0 rounded-[62px] shadow-[0_30px_60px_rgba(0,0,0,0.35)]"
@@ -51,11 +67,14 @@ export function DeviceFrame({
         className="relative overflow-hidden rounded-[53px] bg-white ring-1 ring-black/80"
         style={{ width: WIDTH, height: HEIGHT }}
       >
-        <div className="absolute inset-0 overflow-y-auto overflow-x-hidden [scrollbar-width:none]">
+        <div
+          className="absolute inset-0 overflow-y-auto overflow-x-hidden [scrollbar-width:none]"
+          onScroll={handleScroll}
+        >
           {children}
         </div>
 
-        <div className="pointer-events-none absolute inset-x-0 top-0 z-20">{header}</div>
+        <div className="pointer-events-none absolute inset-x-0 top-0 z-20">{header(scrollProgress)}</div>
 
         <div
           className="absolute left-1/2 top-[11px] z-30 h-[37px] w-[126px] -translate-x-1/2 rounded-full bg-black"

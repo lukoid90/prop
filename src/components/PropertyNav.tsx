@@ -1,9 +1,7 @@
-import { useState } from 'react'
+export const NAV_TABS = ['Summary', 'Specs', 'Records', 'Owners', 'Photos', 'Map']
 
-const TABS = ['Summary', 'Specs', 'Records', 'Owners', 'Photos', 'Map']
-
-export function PropertyNav() {
-  const [active, setActive] = useState(TABS[0])
+export function PropertyNav({ active, onChange }: { active: string; onChange: (tab: string) => void }) {
+  const TABS = NAV_TABS
   return (
     <div className="flex w-full items-center gap-1 overflow-x-auto px-4 py-1 [scrollbar-width:none]">
       {TABS.map((tab) => {
@@ -12,7 +10,7 @@ export function PropertyNav() {
           <button
             key={tab}
             type="button"
-            onClick={() => setActive(tab)}
+            onClick={() => onChange(tab)}
             className="h-9 shrink-0 rounded-full px-4 text-[14px] leading-[1.26] transition-colors"
             style={
               isActive
