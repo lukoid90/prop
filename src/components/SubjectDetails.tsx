@@ -15,7 +15,7 @@ function Stat({ value, unit, label }: { value: string; unit?: string; label: str
 
 export function SubjectDetails() {
   return (
-    <div className="flex w-full flex-col items-center gap-10 px-4">
+    <div className="flex w-full flex-col items-center gap-6 px-4">
       <div className="flex w-full flex-col gap-4">
         <div className="flex flex-col gap-3">
           <div className="flex flex-col gap-0.5 text-[var(--content-primary)]">

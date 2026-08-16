@@ -10,16 +10,20 @@ import { ExploreAreaSection } from './ExploreAreaSection'
 
 export function PropertyScreen() {
   return (
-    <div className="flex flex-col gap-10 pb-[120px]">
+    <div className="flex flex-col gap-6 pb-[120px]">
       <PropertyPhoto />
       <PropertyNav />
       <SubjectDetails />
-      <ActiveSection />
-      <AlertsSection />
-      <SendToClientSection />
-      <DigDeeperSection />
-      <NotesSection />
-      <ExploreAreaSection />
+      <div className="flex flex-col gap-8">
+        <ActiveSection />
+        <AlertsSection />
+        <div className="flex flex-col gap-10">
+          <SendToClientSection />
+          <DigDeeperSection />
+          <NotesSection />
+          <ExploreAreaSection />
+        </div>
+      </div>
     </div>
   )
 }
