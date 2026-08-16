@@ -2,11 +2,13 @@ import type { ReactNode } from 'react'
 
 const VARIANTS = {
   light: {
-    background: 'rgba(253,252,252,0.45)',
+    lower: 'rgba(253,252,252,0.24)',
+    upper: 'rgba(253,252,252,0.6)',
     color: 'var(--content-primary)',
   },
   dark: {
-    background: 'rgba(18,18,18,0.55)',
+    lower: 'rgba(18,18,18,0.4)',
+    upper: 'rgba(18,18,18,0.6)',
     color: 'var(--content-inverse)',
   },
 } as const
@@ -23,14 +25,16 @@ export function GlassButton({
   const v = VARIANTS[variant]
   return (
     <div
-      className={`flex items-center justify-center gap-1.5 rounded-full backdrop-blur-md ${className}`}
+      className={`relative flex items-center justify-center gap-1.5 overflow-hidden rounded-full backdrop-blur-md ${className}`}
       style={{
-        background: v.background,
         color: v.color,
-        boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.25), 0 1px 2px rgba(18,18,18,0.06)',
+        boxShadow:
+          '0 1px 1px rgba(18,18,18,0.04), 0 2px 2px rgba(18,18,18,0.06), inset 0 40px 10px -40px #282828, inset 0 -40px 10px -40px #282828, inset 0 40px 30px -40px #e6e6e6',
       }}
     >
-      {children}
+      <div className="pointer-events-none absolute inset-0" style={{ background: v.lower }} />
+      <div className="pointer-events-none absolute inset-0 mix-blend-luminosity" style={{ background: v.upper }} />
+      <div className="relative flex items-center justify-center gap-1.5">{children}</div>
     </div>
   )
 }

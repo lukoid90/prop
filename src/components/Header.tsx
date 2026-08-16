@@ -2,6 +2,7 @@ import { ArrowLeft, DotsThree } from '@phosphor-icons/react'
 import { StatusBar } from './StatusBar'
 import { GlassButton } from './GlassButton'
 import { PropertyNav } from './PropertyNav'
+import { ProgressiveBlur } from './ProgressiveBlur'
 
 export function Header({
   scrollProgress,
@@ -21,8 +22,9 @@ export function Header({
         className="absolute inset-0 transition-opacity duration-100 ease-out"
         style={{ opacity: 1 - scrollProgress, pointerEvents: scrolled ? 'none' : 'auto' }}
       >
+        <ProgressiveBlur />
         <div
-          className="absolute inset-0 backdrop-blur-[4px]"
+          className="absolute inset-0"
           style={{
             background: 'linear-gradient(to bottom, rgba(18,18,18,0.16), rgba(18,18,18,0.06) 79%, transparent)',
           }}
@@ -49,8 +51,9 @@ export function Header({
         className="absolute inset-x-0 top-0 overflow-hidden rounded-b-[24px] transition-opacity duration-100 ease-out"
         style={{ height: 106, opacity: scrollProgress, pointerEvents: scrolled ? 'auto' : 'none' }}
       >
+        <ProgressiveBlur />
         <div
-          className="absolute inset-0 backdrop-blur-[5px]"
+          className="absolute inset-0"
           style={{
             background: 'linear-gradient(to bottom, rgba(253,252,252,0.6), rgba(234,215,210,0.24) 79%)',
           }}
