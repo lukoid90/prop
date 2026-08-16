@@ -16,7 +16,7 @@ export function NotepadRow({
   avatarImage: string
   topLine: { text: string; size: keyof typeof LINE_STYLE }
   bottomLine: { text: string; size: keyof typeof LINE_STYLE }
-  action: ReactNode
+  action?: ReactNode
   background: string
   avatarSize?: number
 }) {
@@ -25,16 +25,16 @@ export function NotepadRow({
       className="flex w-full items-center justify-between rounded-2xl border border-[var(--border-default)] px-5 py-4"
       style={{ background }}
     >
-      <div className="flex items-center gap-4">
+      <div className="flex min-w-0 flex-1 items-center gap-4">
         <img
           src={avatarImage}
           alt=""
           className="shrink-0 rounded-full object-cover"
           style={{ width: avatarSize, height: avatarSize }}
         />
-        <div className="flex flex-col items-start whitespace-nowrap">
-          <p className={LINE_STYLE[topLine.size]}>{topLine.text}</p>
-          <p className={LINE_STYLE[bottomLine.size]}>{bottomLine.text}</p>
+        <div className="flex min-w-0 flex-1 flex-col items-start">
+          <p className={`w-full truncate ${LINE_STYLE[topLine.size]}`}>{topLine.text}</p>
+          <p className={`w-full truncate ${LINE_STYLE[bottomLine.size]}`}>{bottomLine.text}</p>
         </div>
       </div>
       {action}

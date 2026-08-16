@@ -26,10 +26,12 @@ function SideButton({ side, top, height }: { side: 'left' | 'right'; top: number
 export function DeviceFrame({
   header,
   dock,
+  overlay,
   children,
 }: {
   header: ReactNode
   dock: ReactNode
+  overlay?: ReactNode
   children: ReactNode
 }) {
   return (
@@ -62,6 +64,8 @@ export function DeviceFrame({
         />
 
         <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20">{dock}</div>
+
+        {overlay && <div className="absolute inset-0 z-40">{overlay}</div>}
       </div>
     </div>
   )
