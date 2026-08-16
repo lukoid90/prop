@@ -1,6 +1,6 @@
 import { ArrowsOutSimple, GraduationCap, TrainSimple, AirplaneTilt } from '@phosphor-icons/react'
 import { GlassButton } from './GlassButton'
-import { PhotoPlaceholder } from './Placeholders'
+import propertyPhoto from '../assets/images/property-photo.png'
 
 const PINS: { icon: 'grad' | 'train' | 'plane'; left: string; top: string }[] = [
   { icon: 'grad', left: '56.5%', top: '16.3%' },
@@ -42,7 +42,7 @@ export function ExploreAreaSection() {
           className="absolute size-8 overflow-hidden rounded-full border-4 border-[var(--border-default)] shadow-[0_8px_16px_rgba(0,0,0,0.08)]"
           style={{ left: '45.4%', top: '43.7%', transform: 'translate(-50%,-50%)' }}
         >
-          <PhotoPlaceholder seed="property-hero" className="size-full" iconSize={16} />
+          <img src={propertyPhoto} alt="" className="size-full object-cover" />
         </div>
 
         <GlassButton className="absolute right-[15px] top-[15px] size-8">

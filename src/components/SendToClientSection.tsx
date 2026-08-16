@@ -1,5 +1,7 @@
 import { Export, Plus } from '@phosphor-icons/react'
 import { Tile } from './Tile'
+import shareProperty from '../assets/images/tile-share-property.png'
+import buyerSearch from '../assets/images/tile-buyer-search.png'
 
 export function SendToClientSection() {
   return (
@@ -9,7 +11,8 @@ export function SendToClientSection() {
         <Tile
           width={181}
           imgHeight={179}
-          seed="share-property"
+          image={shareProperty}
+          alt="Share Property"
           title={
             <>
               Share
@@ -22,7 +25,8 @@ export function SendToClientSection() {
         <Tile
           width={181}
           imgHeight={179}
-          seed="buyer-search"
+          image={buyerSearch}
+          alt="Add to Buyer Search"
           title={
             <>
               Add to Buyer

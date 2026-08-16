@@ -1,14 +1,10 @@
 import type { ReactNode } from 'react'
-import { PhotoPlaceholder } from './Placeholders'
-
-function PhotoTile({ seed, height }: { seed: string; height: number }) {
-  return <PhotoPlaceholder seed={seed} className="w-full" style={{ height }} iconSize={Math.round(height * 0.18)} />
-}
 
 export function Tile({
   width,
   imgHeight,
-  seed,
+  image,
+  alt,
   eyebrow,
   title,
   icon,
@@ -16,7 +12,8 @@ export function Tile({
 }: {
   width: number
   imgHeight: number
-  seed: string
+  image: string
+  alt: string
   eyebrow?: string
   title: ReactNode
   icon: ReactNode
@@ -27,7 +24,7 @@ export function Tile({
       className={`flex shrink-0 flex-col items-start overflow-hidden rounded-2xl border border-[var(--border-dimmer)] ${className}`}
       style={{ width }}
     >
-      <PhotoTile seed={seed} height={imgHeight} />
+      <img src={image} alt={alt} className="w-full object-cover" style={{ height: imgHeight }} />
       <div className="flex h-16 w-full items-center justify-center gap-[2px] rounded-b-2xl rounded-tr-[9px] p-3">
         <div className="flex min-w-0 flex-1 flex-col items-start">
           {eyebrow && (
@@ -44,4 +41,3 @@ export function Tile({
     </div>
   )
 }
-

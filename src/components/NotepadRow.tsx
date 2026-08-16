@@ -1,5 +1,4 @@
 import type { ReactNode } from 'react'
-import { AvatarPlaceholder } from './Placeholders'
 
 const LINE_STYLE = {
   small: 'text-[14px] leading-[1.48] tracking-[0.25px] text-[var(--content-tertiary)]',
@@ -7,14 +6,14 @@ const LINE_STYLE = {
 }
 
 export function NotepadRow({
-  avatarSeed,
+  avatarImage,
   topLine,
   bottomLine,
   action,
   background,
   avatarSize = 44,
 }: {
-  avatarSeed: string
+  avatarImage: string
   topLine: { text: string; size: keyof typeof LINE_STYLE }
   bottomLine: { text: string; size: keyof typeof LINE_STYLE }
   action: ReactNode
@@ -27,7 +26,12 @@ export function NotepadRow({
       style={{ background }}
     >
       <div className="flex items-center gap-4">
-        <AvatarPlaceholder seed={avatarSeed} size={avatarSize} />
+        <img
+          src={avatarImage}
+          alt=""
+          className="shrink-0 rounded-full object-cover"
+          style={{ width: avatarSize, height: avatarSize }}
+        />
         <div className="flex flex-col items-start whitespace-nowrap">
           <p className={LINE_STYLE[topLine.size]}>{topLine.text}</p>
           <p className={LINE_STYLE[bottomLine.size]}>{bottomLine.text}</p>
