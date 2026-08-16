@@ -1,3 +1,4 @@
+import { useRef, useState } from 'react'
 import { Plus, Sparkle } from '@phosphor-icons/react'
 import iconBed from '../assets/icons/specs/icon-bed.svg'
 import iconBathtub from '../assets/icons/specs/icon-bathtub.svg'
@@ -103,6 +104,57 @@ function SpecRow({
         )}
       </div>
       {review && <ReviewButton />}
+    </div>
+  )
+}
+
+function EditableSpecRow({
+  icon,
+  label,
+  value,
+  onChange,
+  short,
+  border = true,
+}: {
+  icon: string
+  label: React.ReactNode
+  value: string
+  onChange: (value: string) => void
+  short?: boolean
+  border?: boolean
+}) {
+  const inputRef = useRef<HTMLInputElement>(null)
+  return (
+    <div
+      className={`flex w-full items-center gap-2.5 ${short ? 'h-12 pb-2' : 'h-14 py-2'} ${border ? 'border-b border-dashed' : ''}`}
+      style={border ? { borderColor: DASHED_BORDER } : undefined}
+    >
+      <div
+        className="flex size-10 shrink-0 items-center justify-center rounded-lg border"
+        style={{ background: 'var(--border-default)', borderColor: '#f1e7e4' }}
+      >
+        <img src={icon} alt="" className="size-5" />
+      </div>
+      <p className="w-[108px] shrink-0 text-[15px] leading-[1.26] tracking-[-0.5px] opacity-65" style={{ color: 'var(--content-primary)' }}>
+        {label}
+      </p>
+      <div className="flex min-w-0 flex-1 items-center justify-between">
+        <input
+          ref={inputRef}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          inputMode="numeric"
+          className="min-w-0 flex-1 border-0 bg-transparent p-0 text-[15px] leading-[1.26] tracking-[-0.5px] outline-none"
+          style={{ color: 'var(--content-primary)', caretColor: AI_BORDER }}
+        />
+        <button
+          type="button"
+          onClick={() => inputRef.current?.focus()}
+          className="flex size-10 shrink-0 items-center justify-center rounded"
+        >
+          <img src={iconPencil} alt="" className="size-5" />
+        </button>
+      </div>
     </div>
   )
 }
@@ -281,30 +333,37 @@ function IdentifiersSection() {
 }
 
 export function SpecsSection() {
+  const [bedrooms, setBedrooms] = useState('3')
+  const [bathrooms, setBathrooms] = useState('2')
+  const [homeSize, setHomeSize] = useState('2,000')
+  const [lotSize, setLotSize] = useState('24,500')
+
   return (
     <div className="flex w-full flex-col items-start gap-4 px-4">
       <MlsSearchField />
       <AiNotepad />
       <div className="flex w-full flex-col items-start">
-        <SpecRow icon={iconBed} label="Bedrooms" value="3" short />
-        <SpecRow icon={iconBathtub} label="Bathrooms" value="2" />
-        <SpecRow
+        <EditableSpecRow icon={iconBed} label="Bedrooms" value={bedrooms} onChange={setBedrooms} short />
+        <EditableSpecRow icon={iconBathtub} label="Bathrooms" value={bathrooms} onChange={setBathrooms} />
+        <EditableSpecRow
           icon={iconFloorplan}
           label={
             <>
               Home size, ft<sup>2</sup>
             </>
           }
-          value="2,000"
+          value={homeSize}
+          onChange={setHomeSize}
         />
-        <SpecRow
+        <EditableSpecRow
           icon={iconLot}
           label={
             <>
               Lot size, ft<sup>2</sup>
             </>
           }
-          value="24,500"
+          value={lotSize}
+          onChange={setLotSize}
         />
         <SpecRow icon={iconHoa} label="HOA fees" value="$200 monthly" valueSub="$1200 billed annually" />
         <SpecRow icon={iconCalendarX} label="Year built" value="2010" />
