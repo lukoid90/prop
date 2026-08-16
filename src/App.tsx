@@ -6,6 +6,7 @@ import { PropertyScreen } from './components/PropertyScreen'
 import { NoteSheet } from './components/NoteSheet'
 import { AddAlertSheet, type PriceDropAlert } from './components/AddAlertSheet'
 import { NAV_TABS } from './components/PropertyNav'
+import { formatEntryTimestamp } from './lib/formatEntryTimestamp'
 import type { Note, PriceDropAlertEntry } from './types'
 
 function App() {
@@ -16,13 +17,13 @@ function App() {
   const [isAddingAlert, setIsAddingAlert] = useState(false)
 
   const handleSaveNote = (message: string) => {
-    const date = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+    const date = formatEntryTimestamp(new Date())
     setNotes((prev) => [{ id: crypto.randomUUID(), date, message }, ...prev])
     setIsAddingNote(false)
   }
 
   const handleSaveAlert = (alert: PriceDropAlert) => {
-    const date = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+    const date = formatEntryTimestamp(new Date())
     setPriceDropAlerts((prev) => [{ id: crypto.randomUUID(), date, ...alert }, ...prev])
     setIsAddingAlert(false)
   }

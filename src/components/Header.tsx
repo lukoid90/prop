@@ -29,7 +29,7 @@ export function Header({
         />
         <div className="relative flex flex-col">
           <StatusBar />
-          <div className="mt-2 flex h-[44px] items-center justify-between px-4 pb-2">
+          <div className="flex h-[44px] items-center justify-between px-4">
             <GlassButton className="pointer-events-auto size-10 shrink-0">
               <ArrowLeft size={17} color="var(--content-inverse)" />
             </GlassButton>
@@ -47,7 +47,7 @@ export function Header({
       {/* Past the hero photo: light frosted bar with the section tabs pinned in place */}
       <div
         className="absolute inset-x-0 top-0 overflow-hidden rounded-b-[24px] transition-opacity duration-100 ease-out"
-        style={{ height: 114, opacity: scrollProgress, pointerEvents: scrolled ? 'auto' : 'none' }}
+        style={{ height: 106, opacity: scrollProgress, pointerEvents: scrolled ? 'auto' : 'none' }}
       >
         <div
           className="absolute inset-0 backdrop-blur-[5px]"
@@ -57,9 +57,7 @@ export function Header({
         />
         <div className="relative flex flex-col">
           <StatusBar dark />
-          <div className="mt-1">
-            <PropertyNav active={activeTab} onChange={onTabChange} />
-          </div>
+          <PropertyNav active={activeTab} onChange={onTabChange} />
         </div>
       </div>
     </div>
