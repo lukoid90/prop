@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import { Plus, Sparkle } from '@phosphor-icons/react'
 import iconBed from '../assets/icons/specs/icon-bed.svg'
 import iconBathtub from '../assets/icons/specs/icon-bathtub.svg'
@@ -27,6 +27,12 @@ import featureOutdoorDining from '../assets/images/specs/feature-outdoor-dining.
 const AI_BORDER = '#9875a9'
 const AI_GRADIENT = 'linear-gradient(203deg, #9875a9 31.8%, #7f5a90 65.8%, #694b77 95.5%)'
 const DASHED_BORDER = 'rgba(13,12,12,0.24)'
+
+function formatThousands(raw: string) {
+  const digits = raw.replace(/\D/g, '')
+  if (!digits) return ''
+  return Number(digits).toLocaleString('en-US')
+}
 
 function Divider() {
   return (
@@ -123,7 +129,6 @@ function EditableSpecRow({
   short?: boolean
   border?: boolean
 }) {
-  const inputRef = useRef<HTMLInputElement>(null)
   return (
     <div
       className={`flex w-full items-center gap-2.5 ${short ? 'h-12 pb-2' : 'h-14 py-2'} ${border ? 'border-b border-dashed' : ''}`}
@@ -138,23 +143,13 @@ function EditableSpecRow({
       <p className="w-[108px] shrink-0 text-[15px] leading-[1.26] tracking-[-0.5px] opacity-65" style={{ color: 'var(--content-primary)' }}>
         {label}
       </p>
-      <div className="flex min-w-0 flex-1 items-center justify-between">
-        <input
-          ref={inputRef}
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          inputMode="numeric"
-          className="min-w-0 flex-1 border-0 bg-transparent p-0 text-[15px] leading-[1.26] tracking-[-0.5px] outline-none"
-          style={{ color: 'var(--content-primary)', caretColor: AI_BORDER }}
-        />
-        <button
-          type="button"
-          onClick={() => inputRef.current?.focus()}
-          className="flex size-10 shrink-0 items-center justify-center rounded"
-        >
-          <img src={iconPencil} alt="" className="size-5" />
-        </button>
-      </div>
+      <input
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        inputMode="numeric"
+        className="min-w-0 flex-1 border-0 bg-transparent p-0 text-[15px] leading-[1.26] tracking-[-0.5px] outline-none"
+        style={{ color: 'var(--content-primary)', caretColor: AI_BORDER }}
+      />
     </div>
   )
 }
@@ -343,8 +338,19 @@ export function SpecsSection() {
       <MlsSearchField />
       <AiNotepad />
       <div className="flex w-full flex-col items-start">
-        <EditableSpecRow icon={iconBed} label="Bedrooms" value={bedrooms} onChange={setBedrooms} short />
-        <EditableSpecRow icon={iconBathtub} label="Bathrooms" value={bathrooms} onChange={setBathrooms} />
+        <EditableSpecRow
+          icon={iconBed}
+          label="Bedrooms"
+          value={bedrooms}
+          onChange={(v) => setBedrooms(v.replace(/\D/g, ''))}
+          short
+        />
+        <EditableSpecRow
+          icon={iconBathtub}
+          label="Bathrooms"
+          value={bathrooms}
+          onChange={(v) => setBathrooms(v.replace(/\D/g, ''))}
+        />
         <EditableSpecRow
           icon={iconFloorplan}
           label={
@@ -353,7 +359,7 @@ export function SpecsSection() {
             </>
           }
           value={homeSize}
-          onChange={setHomeSize}
+          onChange={(v) => setHomeSize(formatThousands(v))}
         />
         <EditableSpecRow
           icon={iconLot}
@@ -363,7 +369,7 @@ export function SpecsSection() {
             </>
           }
           value={lotSize}
-          onChange={setLotSize}
+          onChange={(v) => setLotSize(formatThousands(v))}
         />
         <SpecRow icon={iconHoa} label="HOA fees" value="$200 monthly" valueSub="$1200 billed annually" />
         <SpecRow icon={iconCalendarX} label="Year built" value="2010" />
