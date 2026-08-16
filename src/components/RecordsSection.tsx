@@ -257,37 +257,48 @@ function ListingDescriptionCard() {
   )
 }
 
+// Priced against the 2,000 ft² home size from the Specs tab, ending at the
+// current $1,000,000 listing. The 2023 sale/purchase price and 2026 remodel
+// (see Specs > Condition: Remodel) match the Mortgage tab below.
 function ListingsTab() {
   return (
     <div className="flex w-full flex-col items-start gap-6 pt-6">
       <ListingDescriptionCard />
       <YearGroup year="2026">
-        <ListingEventCard date="Aug 16, 2026" label="Price change" price="$1,300,000" priceSub="$980 per ft²" trend="+5%" />
-        <ListingEventCard date="Aug 2, 2026" label="Listed for sale" price="$1,200,000" priceSub="$950 per ft²" trend="+2%" />
+        <ListingEventCard date="May 28, 2026" label="Listed for sale" price="$1,000,000" priceSub="$500 per ft²" trend="+4.2%" />
+        <ListingEventCard date="Feb 3, 2026" label="Price change" price="$960,000" priceSub="$480 per ft²" trend="+12.9%" />
       </YearGroup>
-      <YearGroup year="2025">
-        <ListingEventCard date="Jun 18, 2025" label="Sold" price="$1,000,000" priceSub="$780 per ft²" />
-        <ListingEventCard date="Jun 12, 2025" label="Listed for sale" price="$900,000" priceSub="$650 per ft²" trend="+2%" />
-        <ListingEventCard date="May 18, 2025" label="Listing removed" />
-        <ListingEventCard date="May 1, 2025" label="Listed for sale" price="$800,000" priceSub="$450 per ft²" />
+      <YearGroup year="2023">
+        <ListingEventCard date="Apr 2, 2023" label="Sold" price="$850,000" priceSub="$425 per ft²" />
+        <ListingEventCard date="Jan 15, 2023" label="Listed for sale" price="$820,000" priceSub="$410 per ft²" />
       </YearGroup>
     </div>
   )
 }
 
+// Missouri's effective property tax rate runs ~1.1%; assessed value trails
+// market value and grows a few percent a year between reassessments.
 function TaxRecordsTab() {
-  const years = ['2025', '2024', '2023', '2022']
+  const years = [
+    { year: '2025', taxes: '$9,800', assessedValue: '$890,000', assessedValueSub: '$445 per ft²', trend: '+3.5%' },
+    { year: '2024', taxes: '$9,500', assessedValue: '$860,000', assessedValueSub: '$430 per ft²', trend: '+2.4%' },
+    { year: '2023', taxes: '$9,200', assessedValue: '$840,000', assessedValueSub: '$420 per ft²', trend: '+2.4%' },
+    { year: '2022', taxes: '$9,000', assessedValue: '$820,000', assessedValueSub: '$410 per ft²', trend: '+2.5%' },
+  ]
   return (
     <div className="flex w-full flex-col items-start gap-5 pt-6">
-      {years.map((year) => (
+      {years.map(({ year, ...card }) => (
         <YearGroup key={year} year={year}>
-          <TaxYearCard taxes="$1,300,000" assessedValue="$1,300,000" assessedValueSub="$980 per ft²" trend="+5%" />
+          <TaxYearCard {...card} />
         </YearGroup>
       ))}
     </div>
   )
 }
 
+// 80% LTV purchase mortgage in 2023 at that year's higher rate environment,
+// plus a 2025 home-equity loan (shorter term, typically-higher HELOC rate)
+// that funded the remodel reflected in the 2026 listing price above.
 function MortgageTab() {
   return (
     <div className="flex w-full flex-col items-start gap-5 pt-6">
@@ -296,9 +307,9 @@ function MortgageTab() {
           date="Nov 23, 2025"
           type="Equity loan"
           loanAmount="$160,000"
-          term="30 yr"
+          term="15 yr"
           lender="Bank of America"
-          rate="5.5%"
+          rate="8.0%"
           rateType="Fixed Rate"
         />
       </YearGroup>
@@ -306,10 +317,10 @@ function MortgageTab() {
         <MortgageEventCard
           date="Apr 2, 2023"
           type="Mortgage"
-          loanAmount="$850,000"
-          term="20 yr"
+          loanAmount="$680,000"
+          term="30 yr"
           lender="Bank of America"
-          rate="2.5%"
+          rate="6.5%"
           rateType="Fixed Rate"
         />
       </YearGroup>
