@@ -8,6 +8,7 @@ import { DigDeeperSection } from './DigDeeperSection'
 import { NotesSection } from './NotesSection'
 import { ExploreAreaSection } from './ExploreAreaSection'
 import { SpecsSection } from './SpecsSection'
+import { RecordsSection } from './RecordsSection'
 import type { Note, PriceDropAlertEntry } from '../types'
 
 export function PropertyScreen({
@@ -30,6 +31,15 @@ export function PropertyScreen({
       <div className="flex flex-col pb-[120px]">
         <div style={{ height: 126 }} aria-hidden />
         <SpecsSection />
+      </div>
+    )
+  }
+
+  if (activeTab === 'Records') {
+    return (
+      <div className="flex flex-col pb-[120px]">
+        <div style={{ height: 126 }} aria-hidden />
+        <RecordsSection />
       </div>
     )
   }

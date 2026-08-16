@@ -33,7 +33,7 @@ function App() {
       <DeviceFrame
         header={(scrollProgress) => (
           <Header
-            scrollProgress={activeTab === 'Specs' ? 1 : scrollProgress}
+            scrollProgress={activeTab === 'Specs' || activeTab === 'Records' ? 1 : scrollProgress}
             activeTab={activeTab}
             onTabChange={setActiveTab}
           />
