@@ -59,17 +59,23 @@ export function SubjectDetails() {
       <div className="flex w-full flex-col items-start gap-6">
         <p className="text-[20px] font-bold leading-[1.26] text-[var(--content-primary)]">Listing</p>
         <div
-          className="flex w-full flex-col items-center gap-0.5 rounded-2xl pb-3 pt-3"
-          style={{ background: '#b9c9c3' }}
+          className="flex w-full flex-col items-center gap-1 rounded-2xl py-3"
+          style={{
+            backgroundImage:
+              'linear-gradient(90deg, rgba(253,252,252,0.6) 0%, rgba(253,252,252,0.6) 100%), linear-gradient(90deg, rgba(253,252,252,0.6) 0%, rgba(253,252,252,0.6) 100%), linear-gradient(90deg, rgb(13,87,57) 0%, rgb(13,87,57) 100%)',
+          }}
         >
-          <div className="flex w-full items-center gap-2 px-4 text-[var(--content-primary)]">
-            <ListingStat label="Listed for" value="$1,000,000" />
-            <ListingStat label="Per /ft² Home" value="$879" />
-            <ListingStat label="Per/ac Lot" value="$431" />
+          <div className="flex w-full items-center gap-2 px-4 pt-1 text-[var(--content-primary)]">
+            <ListingStat className="w-[108px]" label="Listed for" value="$1,000,000" />
+            <ListingStat className="w-[108px]" label="Per /ft² Home" value="$879" />
+            <ListingStat className="w-[102px]" label="Per/ac Lot" value="$431" />
           </div>
-          <div className="flex w-full items-center gap-2 px-4 text-[var(--content-primary)]">
-            <ListingStat label="Listed on" value="May 28" />
-            <ListingStat label="DOM" value="104" />
+          <div className="flex w-full items-center gap-2 px-4 pt-1 text-[var(--content-primary)]">
+            <ListingStat className="w-[108px]" label="Listed on" value="May 28" />
+            <ListingStat className="w-[108px]" label="DOM" value="104" />
+            <div className="flex flex-1 items-center justify-end self-stretch">
+              <MoreTag />
+            </div>
           </div>
         </div>
       </div>
@@ -77,9 +83,9 @@ export function SubjectDetails() {
   )
 }
 
-function ListingStat({ label, value }: { label: string; value: string }) {
+function ListingStat({ label, value, className = '' }: { label: string; value: string; className?: string }) {
   return (
-    <div className="flex w-[102px] shrink-0 flex-col items-start justify-center gap-px">
+    <div className={`flex shrink-0 flex-col items-start justify-center gap-px ${className}`}>
       <p className="text-[12px] leading-[1.48] tracking-[0.5px]">{label}</p>
       <p className="text-[16px] leading-[1.48] tracking-[0px]">{value}</p>
     </div>
