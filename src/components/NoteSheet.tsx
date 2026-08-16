@@ -57,14 +57,16 @@ export function NoteSheet({
           <div className="h-px w-full bg-[var(--border-dimmer)]" />
         </div>
 
-        <textarea
-          autoFocus
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          placeholder="Leave a note about the property..."
-          className="w-full flex-1 resize-none bg-transparent p-4 text-[15px] leading-[1.26] tracking-[-0.5px] text-[var(--content-primary)] outline-none placeholder:text-[rgba(18,18,18,0.24)]"
-          style={{ caretColor: '#7f5a90' }}
-        />
+        <div className="min-h-0 flex-1">
+          <textarea
+            autoFocus
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            placeholder="Leave a note about the property..."
+            className="size-full resize-none bg-transparent p-4 text-[15px] leading-[1.26] tracking-[-0.5px] text-[var(--content-primary)] outline-none placeholder:text-[rgba(18,18,18,0.24)]"
+            style={{ caretColor: '#7f5a90' }}
+          />
+        </div>
       </div>
     </div>
   )
