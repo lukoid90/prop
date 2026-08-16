@@ -28,7 +28,7 @@ export function PropertyScreen({
   if (activeTab === 'Specs') {
     return (
       <div className="flex flex-col pb-[120px]">
-        <div style={{ height: 106 }} aria-hidden />
+        <div style={{ height: 126 }} aria-hidden />
         <SpecsSection />
       </div>
     )

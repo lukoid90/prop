@@ -1,22 +1,27 @@
-import { Database, PencilSimple, Plus, Sparkle, CaretRight } from '@phosphor-icons/react'
-import specBed from '../assets/images/specs/spec-bed.png'
-import specBathtub from '../assets/images/specs/spec-bathtub.png'
-import specFloorplan from '../assets/images/specs/spec-floorplan.png'
-import specLot from '../assets/images/specs/spec-lot.png'
-import specHoa from '../assets/images/specs/spec-hoa.png'
-import specCalendar from '../assets/images/specs/spec-calendar.png'
+import { Plus, Sparkle } from '@phosphor-icons/react'
+import iconBed from '../assets/icons/specs/icon-bed.svg'
+import iconBathtub from '../assets/icons/specs/icon-bathtub.svg'
+import iconFloorplan from '../assets/icons/specs/icon-floorplan.svg'
+import iconLot from '../assets/icons/specs/icon-lot.svg'
+import iconHoa from '../assets/icons/specs/icon-hoa.svg'
+import iconCalendarX from '../assets/icons/specs/icon-calendar-x.svg'
+import iconGarage from '../assets/icons/specs/icon-garage.svg'
+import iconDatabase from '../assets/icons/specs/icon-database.svg'
+import iconPencil from '../assets/icons/specs/icon-pencil.svg'
+import iconAiCamera from '../assets/icons/specs/icon-ai-camera.svg'
+import iconAirCon from '../assets/icons/specs/icon-air-con.svg'
+import iconEvCharger from '../assets/icons/specs/icon-ev-charger.svg'
+import iconSecurity from '../assets/icons/specs/icon-security.svg'
+import iconAiDetected from '../assets/icons/specs/icon-ai-detected.svg'
+import iconAfters from '../assets/icons/specs/icon-afters.svg'
 import specPropertyType from '../assets/images/specs/spec-property-type.png'
 import specStyle from '../assets/images/specs/spec-style.png'
 import specCondition from '../assets/images/specs/spec-condition.png'
 import specView from '../assets/images/specs/spec-view.png'
-import specGarage from '../assets/images/specs/spec-garage.png'
 import featureCinemaRoom from '../assets/images/specs/feature-cinema-room.png'
 import featureClawfootTub from '../assets/images/specs/feature-clawfoot-tub.png'
-import featureAirCon from '../assets/images/specs/feature-air-con.png'
 import featureMarbleKitchen from '../assets/images/specs/feature-marble-kitchen.png'
-import featureEvCharger from '../assets/images/specs/feature-ev-charger.png'
 import featureOutdoorDining from '../assets/images/specs/feature-outdoor-dining.png'
-import featureSecurity from '../assets/images/specs/feature-security.png'
 
 const AI_BORDER = '#9875a9'
 const AI_GRADIENT = 'linear-gradient(203deg, #9875a9 31.8%, #7f5a90 65.8%, #694b77 95.5%)'
@@ -47,6 +52,7 @@ function ReviewButton() {
 
 function SpecRow({
   icon,
+  photo,
   label,
   value,
   valueSub,
@@ -55,7 +61,8 @@ function SpecRow({
   border = true,
   short,
 }: {
-  icon: string
+  icon?: string
+  photo?: string
   label: React.ReactNode
   value: string
   valueSub?: string
@@ -69,7 +76,16 @@ function SpecRow({
       className={`flex w-full items-center gap-2.5 ${short ? 'h-12 pb-2' : 'h-14 py-2'} ${border ? 'border-b border-dashed' : ''}`}
       style={border ? { borderColor: DASHED_BORDER } : undefined}
     >
-      <img src={icon} alt="" className="size-10 shrink-0 rounded-lg object-cover" />
+      {photo ? (
+        <img src={photo} alt="" className="size-10 shrink-0 rounded-lg object-cover" />
+      ) : (
+        <div
+          className="flex size-10 shrink-0 items-center justify-center rounded-lg border"
+          style={{ background: 'var(--border-default)', borderColor: '#f1e7e4' }}
+        >
+          <img src={icon} alt="" className="size-5" />
+        </div>
+      )}
       <p className="w-[108px] shrink-0 text-[15px] leading-[1.26] tracking-[-0.5px] opacity-65" style={{ color: 'var(--content-primary)' }}>
         {label}
       </p>
@@ -97,12 +113,12 @@ function MlsSearchField() {
       className="flex h-12 w-full items-center gap-2 rounded-full border-[0.5px] py-1 pl-3 pr-1"
       style={{ borderColor: 'var(--border-resting)', background: 'var(--surface-lighter)' }}
     >
-      <Database size={20} color="var(--content-primary)" />
+      <img src={iconDatabase} alt="" className="size-5 shrink-0" />
       <p className="flex-1 truncate text-[15px] leading-[1.26] tracking-[-0.5px]" style={{ color: 'var(--content-primary)' }}>
         MLS Listing, Aug 16 2026
       </p>
       <button type="button" className="flex size-10 shrink-0 items-center justify-center rounded-lg">
-        <PencilSimple size={20} color="var(--content-primary)" />
+        <img src={iconPencil} alt="" className="size-5" />
       </button>
     </div>
   )
@@ -118,9 +134,7 @@ function AiNotepad() {
           'linear-gradient(90deg, rgba(253,252,252,0.6) 0%, rgba(253,252,252,0.6) 100%), linear-gradient(191deg, #e0d9e7 31.8%, #cec4da 65.8%, #b6a7c8 95.5%)',
       }}
     >
-      <div className="flex size-11 shrink-0 items-center justify-center">
-        <Sparkle size={24} weight="fill" color={AI_BORDER} />
-      </div>
+      <img src={iconAiCamera} alt="" className="size-11 shrink-0" />
       <p className="flex-1 text-[14px] leading-[1.48] tracking-[0.25px]" style={{ color: 'var(--content-primary)' }}>
         Our AI has detected features from listing photos. There&rsquo;s{' '}
         <span className="bg-clip-text font-bold text-transparent" style={{ backgroundImage: AI_GRADIENT }}>
@@ -132,37 +146,46 @@ function AiNotepad() {
   )
 }
 
-function FeaturePill({ label, avatar, ai }: { label: string; avatar: string; ai?: boolean }) {
+function FeaturePill({ label, avatar, icon, ai }: { label: string; avatar?: string; icon?: string; ai?: boolean }) {
   return (
     <div
       className="flex min-w-12 shrink-0 items-center justify-center gap-2 rounded-full border py-2 pl-2 pr-3"
       style={{ borderColor: ai ? AI_BORDER : 'var(--border-resting)' }}
     >
-      <img
-        src={avatar}
-        alt=""
-        className="size-8 shrink-0 rounded-full object-cover"
-        style={ai ? { boxShadow: `0 0 0 0.8px ${AI_BORDER}` } : undefined}
-      />
+      {avatar ? (
+        <img
+          src={avatar}
+          alt=""
+          className="size-8 shrink-0 rounded-full object-cover"
+          style={ai ? { boxShadow: `0 0 0 0.8px ${AI_BORDER}` } : undefined}
+        />
+      ) : (
+        <div
+          className="flex size-8 shrink-0 items-center justify-center rounded-full border"
+          style={{ background: 'var(--border-default)', borderColor: '#f1e7e4' }}
+        >
+          <img src={icon} alt="" className="size-4" />
+        </div>
+      )}
       <p
         className={`whitespace-nowrap text-[15px] leading-[1.26] ${ai ? 'italic' : ''}`}
         style={{ color: ai ? 'var(--content-tertiary)' : 'var(--content-primary)' }}
       >
         {label}
       </p>
-      <CaretRight size={12} color="var(--content-primary)" style={{ opacity: 0.4 }} />
+      {ai ? <img src={iconAiDetected} alt="" className="size-4 shrink-0" /> : <img src={iconAfters} alt="" className="h-3 w-4 shrink-0" />}
     </div>
   )
 }
 
-const FEATURES: { label: string; avatar: string; ai?: boolean }[] = [
+const FEATURES: { label: string; avatar?: string; icon?: string; ai?: boolean }[] = [
   { label: 'Cinema room', avatar: featureCinemaRoom, ai: true },
   { label: 'Clawfoot tub', avatar: featureClawfootTub, ai: true },
-  { label: 'Air con', avatar: featureAirCon },
+  { label: 'Air con', icon: iconAirCon },
   { label: 'Marble kitchen', avatar: featureMarbleKitchen },
-  { label: 'EV charger', avatar: featureEvCharger },
+  { label: 'EV charger', icon: iconEvCharger },
   { label: 'Outdoor dining', avatar: featureOutdoorDining },
-  { label: 'Security', avatar: featureSecurity },
+  { label: 'Security', icon: iconSecurity },
 ]
 
 function FeaturesAmenities() {
@@ -225,7 +248,7 @@ function AddressSection() {
         Address
       </p>
       <DetailRow label="First line" value="780 Correa Way" />
-      <DetailRow label="First line" value="780 Correa Way" />
+      <DetailRow label="Neighborhood" value="Ozark Meadows" />
       <DetailRow label="Full" valueLines={['780 Correa Way, Ozark,', 'MO 42802']} border={false} />
     </div>
   )
@@ -263,10 +286,10 @@ export function SpecsSection() {
       <MlsSearchField />
       <AiNotepad />
       <div className="flex w-full flex-col items-start">
-        <SpecRow icon={specBed} label="Bedrooms" value="3" short />
-        <SpecRow icon={specBathtub} label="Bathrooms" value="2" />
+        <SpecRow icon={iconBed} label="Bedrooms" value="3" short />
+        <SpecRow icon={iconBathtub} label="Bathrooms" value="2" />
         <SpecRow
-          icon={specFloorplan}
+          icon={iconFloorplan}
           label={
             <>
               Home size, ft<sup>2</sup>
@@ -275,7 +298,7 @@ export function SpecsSection() {
           value="2,000"
         />
         <SpecRow
-          icon={specLot}
+          icon={iconLot}
           label={
             <>
               Lot size, ft<sup>2</sup>
@@ -283,13 +306,13 @@ export function SpecsSection() {
           }
           value="24,500"
         />
-        <SpecRow icon={specHoa} label="HOA fees" value="$200 monthly" valueSub="$1200 billed annually" />
-        <SpecRow icon={specCalendar} label="Year built" value="2010" />
-        <SpecRow icon={specPropertyType} label="Property type" value="Single family" />
-        <SpecRow icon={specStyle} label="Style" value="Contemporary" />
-        <SpecRow icon={specCondition} label="Condition" value="Remodel" italic review />
-        <SpecRow icon={specView} label="View" value="Woodlands" italic review />
-        <SpecRow icon={specGarage} label="Garage spaces" value="4" border={false} />
+        <SpecRow icon={iconHoa} label="HOA fees" value="$200 monthly" valueSub="$1200 billed annually" />
+        <SpecRow icon={iconCalendarX} label="Year built" value="2010" />
+        <SpecRow photo={specPropertyType} label="Property type" value="Single family" />
+        <SpecRow photo={specStyle} label="Style" value="Contemporary" />
+        <SpecRow photo={specCondition} label="Condition" value="Remodel" italic review />
+        <SpecRow photo={specView} label="View" value="Woodlands" italic review />
+        <SpecRow icon={iconGarage} label="Garage spaces" value="4" border={false} />
       </div>
       <Divider />
       <FeaturesAmenities />
