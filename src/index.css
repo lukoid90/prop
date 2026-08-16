@@ -1,5 +1,4 @@
 @import 'tailwindcss';
-@source '../node_modules/liquid-glass-react/dist/**/*.js';
 
 :root {
   --content-primary: #121212;
