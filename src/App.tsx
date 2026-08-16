@@ -6,13 +6,13 @@ import { PropertyScreen } from './components/PropertyScreen'
 import { NoteSheet } from './components/NoteSheet'
 import { AddAlertSheet, type PriceDropAlert } from './components/AddAlertSheet'
 import { NAV_TABS } from './components/PropertyNav'
-import type { Note } from './types'
+import type { Note, PriceDropAlertEntry } from './types'
 
 function App() {
   const [notes, setNotes] = useState<Note[]>([])
   const [isAddingNote, setIsAddingNote] = useState(false)
   const [activeTab, setActiveTab] = useState(NAV_TABS[0])
-  const [priceDropAlert, setPriceDropAlert] = useState<PriceDropAlert | null>(null)
+  const [priceDropAlerts, setPriceDropAlerts] = useState<PriceDropAlertEntry[]>([])
   const [isAddingAlert, setIsAddingAlert] = useState(false)
 
   const handleSaveNote = (message: string) => {
@@ -22,7 +22,8 @@ function App() {
   }
 
   const handleSaveAlert = (alert: PriceDropAlert) => {
-    setPriceDropAlert(alert)
+    const date = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+    setPriceDropAlerts((prev) => [{ id: crypto.randomUUID(), date, ...alert }, ...prev])
     setIsAddingAlert(false)
   }
 
@@ -45,7 +46,7 @@ function App() {
           onOpenAddNote={() => setIsAddingNote(true)}
           activeTab={activeTab}
           onTabChange={setActiveTab}
-          priceDropAlert={priceDropAlert}
+          priceDropAlerts={priceDropAlerts}
           onOpenPriceDropAlert={() => setIsAddingAlert(true)}
         />
       </DeviceFrame>
