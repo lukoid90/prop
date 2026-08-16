@@ -45,9 +45,11 @@ export function ExploreAreaSection() {
           <img src={propertyPhoto} alt="" className="size-full object-cover" />
         </div>
 
-        <GlassButton className="absolute right-[15px] top-[15px] size-8">
-          <ArrowsOutSimple size={13} color="var(--content-primary)" />
-        </GlassButton>
+        <div className="absolute right-[15px] top-[15px]">
+          <GlassButton className="size-8">
+            <ArrowsOutSimple size={13} color="var(--content-primary)" />
+          </GlassButton>
+        </div>
       </div>
     </div>
   )

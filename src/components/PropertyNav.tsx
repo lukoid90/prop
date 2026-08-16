@@ -1,4 +1,4 @@
-export const NAV_TABS = ['Summary', 'Specs', 'Records', 'Owners', 'Photos', 'Map']
+export const NAV_TABS = ['Summary', 'Specs', 'Records', 'Owners']
 
 export function PropertyNav({ active, onChange }: { active: string; onChange: (tab: string) => void }) {
   const TABS = NAV_TABS

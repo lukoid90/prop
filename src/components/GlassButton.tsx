@@ -24,8 +24,13 @@ export function GlassButton({ variant = 'light', className = '', children, type 
   return (
     <button
       type={type}
-      className={`relative flex items-center justify-center gap-1.5 overflow-hidden rounded-full border-0 bg-transparent backdrop-blur-md disabled:opacity-40 ${className}`}
+      className={`flex items-center justify-center gap-1.5 overflow-hidden rounded-full border-0 bg-transparent backdrop-blur-md disabled:opacity-40 ${className}`}
       style={{
+        // Fixed via inline style (not a `relative` class) so it can't lose a
+        // cascade tie against a caller's `absolute` positioning class — this
+        // element must stay a positioning context for its own overlay layers
+        // regardless of how the caller places it within their own layout.
+        position: 'relative',
         color: v.color,
         boxShadow:
           '0 1px 1px rgba(18,18,18,0.04), 0 2px 2px rgba(18,18,18,0.06), inset 0 40px 10px -40px #282828, inset 0 -40px 10px -40px #282828, inset 0 40px 30px -40px #e6e6e6',
