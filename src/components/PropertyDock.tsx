@@ -1,6 +1,6 @@
 import { GlassButton } from './GlassButton'
 
-export function PropertyDock() {
+export function PropertyDock({ onShareProperty }: { onShareProperty: () => void }) {
   return (
     <div className="pointer-events-none relative h-[74px] w-full">
       <div className="pointer-events-auto absolute inset-x-0 top-0 flex items-center justify-center gap-3">
@@ -9,7 +9,7 @@ export function PropertyDock() {
             Set an alert
           </span>
         </GlassButton>
-        <GlassButton variant="dark" className="h-10 whitespace-nowrap px-4">
+        <GlassButton variant="dark" onClick={onShareProperty} className="h-10 whitespace-nowrap px-4">
           <span className="text-[15px] font-bold leading-[1.26] tracking-[-0.5px] text-[var(--content-inverse)]">
             Share property
           </span>

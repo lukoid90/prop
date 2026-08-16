@@ -18,6 +18,7 @@ export function PropertyScreen({
   onTabChange,
   priceDropAlerts,
   onOpenPriceDropAlert,
+  onShareProperty,
 }: {
   notes: Note[]
   onOpenAddNote: () => void
@@ -25,6 +26,7 @@ export function PropertyScreen({
   onTabChange: (tab: string) => void
   priceDropAlerts: PriceDropAlertEntry[]
   onOpenPriceDropAlert: () => void
+  onShareProperty: () => void
 }) {
   if (activeTab === 'Specs') {
     return (
@@ -53,7 +55,7 @@ export function PropertyScreen({
         <ActiveSection priceDropAlerts={priceDropAlerts} />
         <AlertsSection onOpenPriceDropAlert={onOpenPriceDropAlert} />
         <div className="flex flex-col gap-10">
-          <SendToClientSection />
+          <SendToClientSection onShareProperty={onShareProperty} />
           <DigDeeperSection />
           <NotesSection notes={notes} onOpenAdd={onOpenAddNote} />
           <ExploreAreaSection />

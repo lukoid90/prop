@@ -5,6 +5,7 @@ import { PropertyDock } from './components/PropertyDock'
 import { PropertyScreen } from './components/PropertyScreen'
 import { NoteSheet } from './components/NoteSheet'
 import { AddAlertSheet, type PriceDropAlert } from './components/AddAlertSheet'
+import { ShareSheet } from './components/ShareSheet'
 import { NAV_TABS } from './components/PropertyNav'
 import { formatEntryTimestamp } from './lib/formatEntryTimestamp'
 import type { Note, PriceDropAlertEntry } from './types'
@@ -15,6 +16,7 @@ function App() {
   const [activeTab, setActiveTab] = useState(NAV_TABS[0])
   const [priceDropAlerts, setPriceDropAlerts] = useState<PriceDropAlertEntry[]>([])
   const [isAddingAlert, setIsAddingAlert] = useState(false)
+  const [isSharing, setIsSharing] = useState(false)
 
   const handleSaveNote = (message: string) => {
     const date = formatEntryTimestamp(new Date())
@@ -38,11 +40,12 @@ function App() {
             onTabChange={setActiveTab}
           />
         )}
-        dock={<PropertyDock />}
+        dock={<PropertyDock onShareProperty={() => setIsSharing(true)} />}
         overlay={
           <>
             <NoteSheet open={isAddingNote} onClose={() => setIsAddingNote(false)} onSave={handleSaveNote} />
             <AddAlertSheet open={isAddingAlert} onClose={() => setIsAddingAlert(false)} onSave={handleSaveAlert} />
+            <ShareSheet open={isSharing} onClose={() => setIsSharing(false)} />
           </>
         }
       >
@@ -53,6 +56,7 @@ function App() {
           onTabChange={setActiveTab}
           priceDropAlerts={priceDropAlerts}
           onOpenPriceDropAlert={() => setIsAddingAlert(true)}
+          onShareProperty={() => setIsSharing(true)}
         />
       </DeviceFrame>
     </div>

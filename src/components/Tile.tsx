@@ -9,6 +9,7 @@ export function Tile({
   title,
   icon,
   className = '',
+  onClick,
 }: {
   width: number
   imgHeight: number
@@ -18,10 +19,14 @@ export function Tile({
   title: ReactNode
   icon: ReactNode
   className?: string
+  onClick?: () => void
 }) {
+  const Wrapper = onClick ? 'button' : 'div'
   return (
-    <div
-      className={`flex shrink-0 flex-col items-start overflow-hidden rounded-2xl border border-[var(--border-dimmer)] ${className}`}
+    <Wrapper
+      type={onClick ? 'button' : undefined}
+      onClick={onClick}
+      className={`flex shrink-0 flex-col items-start overflow-hidden rounded-2xl border border-[var(--border-dimmer)] text-left ${className}`}
       style={{ width }}
     >
       <img src={image} alt={alt} className="w-full object-cover" style={{ height: imgHeight }} />
@@ -38,6 +43,6 @@ export function Tile({
         </div>
         <div className="shrink-0 text-[var(--content-primary)]">{icon}</div>
       </div>
-    </div>
+    </Wrapper>
   )
 }
