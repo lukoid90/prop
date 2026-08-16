@@ -13,19 +13,35 @@ export interface StatusAlert {
   removeWhenSold: boolean
 }
 
+const SWITCH_WIDTH = 64
+const SWITCH_HEIGHT = 28
+const KNOB_SIZE = 24
+const KNOB_INSET = 2
+const KNOB_PRESSED_WIDTH = 32
+
 function Toggle({ on, onChange }: { on: boolean; onChange: () => void }) {
+  const [pressed, setPressed] = useState(false)
+  const knobWidth = pressed ? KNOB_PRESSED_WIDTH : KNOB_SIZE
+  const knobLeft = on ? SWITCH_WIDTH - knobWidth - KNOB_INSET : KNOB_INSET
+
+  const release = () => setPressed(false)
+
   return (
     <button
       type="button"
       role="switch"
       aria-checked={on}
       onClick={onChange}
-      className="relative h-[31px] w-[51px] shrink-0 rounded-full transition-colors"
-      style={{ background: on ? 'var(--listing-active)' : 'rgba(120,120,128,0.16)' }}
+      onPointerDown={() => setPressed(true)}
+      onPointerUp={release}
+      onPointerLeave={release}
+      onPointerCancel={release}
+      className="relative shrink-0 rounded-full transition-colors duration-200 ease-out"
+      style={{ width: SWITCH_WIDTH, height: SWITCH_HEIGHT, background: on ? 'var(--listing-active)' : '#e9e9ea' }}
     >
       <span
-        className="absolute top-[2px] size-[27px] rounded-full bg-white shadow-[0_3px_1px_rgba(0,0,0,0.06),0_3px_8px_rgba(0,0,0,0.15)] transition-transform"
-        style={{ transform: `translateX(${on ? '22px' : '2px'})` }}
+        className="absolute top-1/2 rounded-full bg-white shadow-[0_3px_1px_rgba(0,0,0,0.06),0_3px_8px_rgba(0,0,0,0.15)] transition-all duration-200 ease-out"
+        style={{ width: knobWidth, height: KNOB_SIZE, left: knobLeft, transform: 'translateY(-50%)' }}
       />
     </button>
   )
