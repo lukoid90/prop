@@ -32,7 +32,11 @@ function App() {
     <div className="flex min-h-svh w-full items-center justify-center p-10">
       <DeviceFrame
         header={(scrollProgress) => (
-          <Header scrollProgress={scrollProgress} activeTab={activeTab} onTabChange={setActiveTab} />
+          <Header
+            scrollProgress={activeTab === 'Specs' ? 1 : scrollProgress}
+            activeTab={activeTab}
+            onTabChange={setActiveTab}
+          />
         )}
         dock={<PropertyDock />}
         overlay={

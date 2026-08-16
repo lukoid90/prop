@@ -25,25 +25,30 @@ export function PropertyScreen({
   priceDropAlerts: PriceDropAlertEntry[]
   onOpenPriceDropAlert: () => void
 }) {
+  if (activeTab === 'Specs') {
+    return (
+      <div className="flex flex-col pb-[120px]">
+        <div style={{ height: 106 }} aria-hidden />
+        <SpecsSection />
+      </div>
+    )
+  }
+
   return (
     <div className="flex flex-col gap-6 pb-[120px]">
       <PropertyPhoto />
       <PropertyNav active={activeTab} onChange={onTabChange} />
       <SubjectDetails />
-      {activeTab === 'Specs' ? (
-        <SpecsSection />
-      ) : (
-        <div className="flex flex-col gap-8">
-          <ActiveSection priceDropAlerts={priceDropAlerts} />
-          <AlertsSection onOpenPriceDropAlert={onOpenPriceDropAlert} />
-          <div className="flex flex-col gap-10">
-            <SendToClientSection />
-            <DigDeeperSection />
-            <NotesSection notes={notes} onOpenAdd={onOpenAddNote} />
-            <ExploreAreaSection />
-          </div>
+      <div className="flex flex-col gap-8">
+        <ActiveSection priceDropAlerts={priceDropAlerts} />
+        <AlertsSection onOpenPriceDropAlert={onOpenPriceDropAlert} />
+        <div className="flex flex-col gap-10">
+          <SendToClientSection />
+          <DigDeeperSection />
+          <NotesSection notes={notes} onOpenAdd={onOpenAddNote} />
+          <ExploreAreaSection />
         </div>
-      )}
+      </div>
     </div>
   )
 }

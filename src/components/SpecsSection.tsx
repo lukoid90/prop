@@ -1,22 +1,22 @@
-import type { ReactNode } from 'react'
-import {
-  Database,
-  PencilSimple,
-  Bed,
-  Bathtub,
-  Ruler,
-  MapTrifold,
-  CurrencyDollar,
-  CalendarX,
-  House,
-  Buildings,
-  Wrench,
-  Binoculars,
-  Car,
-  Plus,
-  Sparkle,
-  CaretRight,
-} from '@phosphor-icons/react'
+import { Database, PencilSimple, Plus, Sparkle, CaretRight } from '@phosphor-icons/react'
+import specBed from '../assets/images/specs/spec-bed.png'
+import specBathtub from '../assets/images/specs/spec-bathtub.png'
+import specFloorplan from '../assets/images/specs/spec-floorplan.png'
+import specLot from '../assets/images/specs/spec-lot.png'
+import specHoa from '../assets/images/specs/spec-hoa.png'
+import specCalendar from '../assets/images/specs/spec-calendar.png'
+import specPropertyType from '../assets/images/specs/spec-property-type.png'
+import specStyle from '../assets/images/specs/spec-style.png'
+import specCondition from '../assets/images/specs/spec-condition.png'
+import specView from '../assets/images/specs/spec-view.png'
+import specGarage from '../assets/images/specs/spec-garage.png'
+import featureCinemaRoom from '../assets/images/specs/feature-cinema-room.png'
+import featureClawfootTub from '../assets/images/specs/feature-clawfoot-tub.png'
+import featureAirCon from '../assets/images/specs/feature-air-con.png'
+import featureMarbleKitchen from '../assets/images/specs/feature-marble-kitchen.png'
+import featureEvCharger from '../assets/images/specs/feature-ev-charger.png'
+import featureOutdoorDining from '../assets/images/specs/feature-outdoor-dining.png'
+import featureSecurity from '../assets/images/specs/feature-security.png'
 
 const AI_BORDER = '#9875a9'
 const AI_GRADIENT = 'linear-gradient(203deg, #9875a9 31.8%, #7f5a90 65.8%, #694b77 95.5%)'
@@ -26,17 +26,6 @@ function Divider() {
   return (
     <div className="w-full py-4">
       <div className="h-px w-full" style={{ background: DASHED_BORDER }} />
-    </div>
-  )
-}
-
-function SpecIcon({ children }: { children: ReactNode }) {
-  return (
-    <div
-      className="flex size-10 shrink-0 items-center justify-center rounded-lg border"
-      style={{ background: 'var(--border-default)', borderColor: '#f1e7e4' }}
-    >
-      {children}
     </div>
   )
 }
@@ -66,8 +55,8 @@ function SpecRow({
   border = true,
   short,
 }: {
-  icon: ReactNode
-  label: ReactNode
+  icon: string
+  label: React.ReactNode
   value: string
   valueSub?: string
   review?: boolean
@@ -80,7 +69,7 @@ function SpecRow({
       className={`flex w-full items-center gap-2.5 ${short ? 'h-12 pb-2' : 'h-14 py-2'} ${border ? 'border-b border-dashed' : ''}`}
       style={border ? { borderColor: DASHED_BORDER } : undefined}
     >
-      <SpecIcon>{icon}</SpecIcon>
+      <img src={icon} alt="" className="size-10 shrink-0 rounded-lg object-cover" />
       <p className="w-[108px] shrink-0 text-[15px] leading-[1.26] tracking-[-0.5px] opacity-65" style={{ color: 'var(--content-primary)' }}>
         {label}
       </p>
@@ -143,18 +132,18 @@ function AiNotepad() {
   )
 }
 
-function FeaturePill({ label, icon, ai }: { label: string; icon: ReactNode; ai?: boolean }) {
+function FeaturePill({ label, avatar, ai }: { label: string; avatar: string; ai?: boolean }) {
   return (
     <div
       className="flex min-w-12 shrink-0 items-center justify-center gap-2 rounded-full border py-2 pl-2 pr-3"
       style={{ borderColor: ai ? AI_BORDER : 'var(--border-resting)' }}
     >
-      <div
-        className="flex size-8 shrink-0 items-center justify-center rounded-full border"
-        style={{ background: 'var(--border-default)', borderColor: ai ? AI_BORDER : '#f1e7e4' }}
-      >
-        {icon}
-      </div>
+      <img
+        src={avatar}
+        alt=""
+        className="size-8 shrink-0 rounded-full object-cover"
+        style={ai ? { boxShadow: `0 0 0 0.8px ${AI_BORDER}` } : undefined}
+      />
       <p
         className={`whitespace-nowrap text-[15px] leading-[1.26] ${ai ? 'italic' : ''}`}
         style={{ color: ai ? 'var(--content-tertiary)' : 'var(--content-primary)' }}
@@ -166,14 +155,14 @@ function FeaturePill({ label, icon, ai }: { label: string; icon: ReactNode; ai?:
   )
 }
 
-const FEATURES: { label: string; icon: ReactNode; ai?: boolean }[] = [
-  { label: 'Cinema room', icon: <Sparkle size={16} weight="fill" color={AI_BORDER} />, ai: true },
-  { label: 'Clawfoot tub', icon: <Bathtub size={16} color={AI_BORDER} />, ai: true },
-  { label: 'Air con', icon: <Wrench size={16} color="var(--content-primary)" /> },
-  { label: 'Marble kitchen', icon: <House size={16} color="var(--content-primary)" /> },
-  { label: 'EV charger', icon: <CurrencyDollar size={16} color="var(--content-primary)" /> },
-  { label: 'Outdoor dining', icon: <MapTrifold size={16} color="var(--content-primary)" /> },
-  { label: 'Security', icon: <Buildings size={16} color="var(--content-primary)" /> },
+const FEATURES: { label: string; avatar: string; ai?: boolean }[] = [
+  { label: 'Cinema room', avatar: featureCinemaRoom, ai: true },
+  { label: 'Clawfoot tub', avatar: featureClawfootTub, ai: true },
+  { label: 'Air con', avatar: featureAirCon },
+  { label: 'Marble kitchen', avatar: featureMarbleKitchen },
+  { label: 'EV charger', avatar: featureEvCharger },
+  { label: 'Outdoor dining', avatar: featureOutdoorDining },
+  { label: 'Security', avatar: featureSecurity },
 ]
 
 function FeaturesAmenities() {
@@ -274,10 +263,10 @@ export function SpecsSection() {
       <MlsSearchField />
       <AiNotepad />
       <div className="flex w-full flex-col items-start">
-        <SpecRow icon={<Bed size={20} color="var(--content-primary)" />} label="Bedrooms" value="3" short />
-        <SpecRow icon={<Bathtub size={20} color="var(--content-primary)" />} label="Bathrooms" value="2" />
+        <SpecRow icon={specBed} label="Bedrooms" value="3" short />
+        <SpecRow icon={specBathtub} label="Bathrooms" value="2" />
         <SpecRow
-          icon={<Ruler size={20} color="var(--content-primary)" />}
+          icon={specFloorplan}
           label={
             <>
               Home size, ft<sup>2</sup>
@@ -286,7 +275,7 @@ export function SpecsSection() {
           value="2,000"
         />
         <SpecRow
-          icon={<MapTrifold size={20} color="var(--content-primary)" />}
+          icon={specLot}
           label={
             <>
               Lot size, ft<sup>2</sup>
@@ -294,18 +283,13 @@ export function SpecsSection() {
           }
           value="24,500"
         />
-        <SpecRow
-          icon={<CurrencyDollar size={20} color="var(--content-primary)" />}
-          label="HOA fees"
-          value="$200 monthly"
-          valueSub="$1200 billed annually"
-        />
-        <SpecRow icon={<CalendarX size={20} color="var(--content-primary)" />} label="Year built" value="2010" />
-        <SpecRow icon={<House size={20} color="var(--content-primary)" />} label="Property type" value="Single family" />
-        <SpecRow icon={<Buildings size={20} color="var(--content-primary)" />} label="Style" value="Contemporary" />
-        <SpecRow icon={<Wrench size={20} color="var(--content-primary)" />} label="Condition" value="Remodel" italic review />
-        <SpecRow icon={<Binoculars size={20} color="var(--content-primary)" />} label="View" value="Woodlands" italic review />
-        <SpecRow icon={<Car size={20} color="var(--content-primary)" />} label="Garage spaces" value="4" border={false} />
+        <SpecRow icon={specHoa} label="HOA fees" value="$200 monthly" valueSub="$1200 billed annually" />
+        <SpecRow icon={specCalendar} label="Year built" value="2010" />
+        <SpecRow icon={specPropertyType} label="Property type" value="Single family" />
+        <SpecRow icon={specStyle} label="Style" value="Contemporary" />
+        <SpecRow icon={specCondition} label="Condition" value="Remodel" italic review />
+        <SpecRow icon={specView} label="View" value="Woodlands" italic review />
+        <SpecRow icon={specGarage} label="Garage spaces" value="4" border={false} />
       </div>
       <Divider />
       <FeaturesAmenities />
