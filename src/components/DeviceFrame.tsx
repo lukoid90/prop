@@ -84,7 +84,7 @@ export function DeviceFrame({
 
         <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20">{dock}</div>
 
-        {overlay && <div className="absolute inset-0 z-40">{overlay}</div>}
+        <div className="pointer-events-none absolute inset-0 z-40">{overlay}</div>
       </div>
     </div>
   )

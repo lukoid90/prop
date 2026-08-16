@@ -25,7 +25,7 @@ function App() {
           <Header scrollProgress={scrollProgress} activeTab={activeTab} onTabChange={setActiveTab} />
         )}
         dock={<PropertyDock />}
-        overlay={isAddingNote && <NoteSheet onClose={() => setIsAddingNote(false)} onSave={handleSaveNote} />}
+        overlay={<NoteSheet open={isAddingNote} onClose={() => setIsAddingNote(false)} onSave={handleSaveNote} />}
       >
         <PropertyScreen
           notes={notes}
