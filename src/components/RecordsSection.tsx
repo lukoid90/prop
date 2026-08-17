@@ -50,6 +50,14 @@ function Card({ children }: { children: ReactNode }) {
   )
 }
 
+function CardDivider() {
+  return (
+    <div className="relative h-[13px] w-full shrink-0">
+      <div className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 border-t border-dashed" style={{ borderColor: '#f1e7e4' }} />
+    </div>
+  )
+}
+
 function YearGroup({ year, children }: { year: string; children: ReactNode }) {
   return (
     <div className="flex w-full flex-col items-start gap-3">
@@ -75,29 +83,33 @@ function PriceTrend({ dir, percent }: { dir: 'up' | 'down'; percent: string }) {
 
 function Row({
   label,
+  labelDim = true,
   labelBold,
   value,
   valueBold,
   trend,
 }: {
   label: string
+  labelDim?: boolean
   labelBold?: boolean
-  value: string
+  value?: ReactNode
   valueBold?: boolean
   trend?: ReactNode
 }) {
   return (
     <div className="flex w-full items-start gap-2 py-1">
       <p
-        className={`flex-1 text-[15px] leading-[1.26] tracking-[-0.5px] ${labelBold ? '' : 'opacity-65'}`}
+        className={`flex-1 text-[15px] leading-[1.26] tracking-[-0.5px] ${labelBold ? 'font-bold' : ''} ${labelDim ? 'opacity-65' : ''}`}
         style={{ color: 'var(--content-primary)' }}
       >
         {label}
       </p>
       <div className="flex items-center gap-2">
-        <span className={`text-[15px] leading-[1.26] tracking-[-0.5px] ${valueBold ? 'font-bold' : ''}`} style={{ color: 'var(--content-primary)' }}>
-          {value}
-        </span>
+        {value !== undefined && (
+          <span className={`text-[15px] leading-[1.26] tracking-[-0.5px] ${valueBold ? 'font-bold' : ''}`} style={{ color: 'var(--content-primary)' }}>
+            {value}
+          </span>
+        )}
         {trend}
       </div>
     </div>
@@ -106,31 +118,43 @@ function Row({
 
 function ListingEventCard({
   date,
-  label,
-  priceLabel,
-  price,
   trend,
+  eventLabel,
+  price,
   perSqFt,
+  source,
 }: {
   date: string
-  label: string
-  priceLabel: string
-  price: string
   trend?: { dir: 'up' | 'down'; percent: string }
+  eventLabel: string
+  price: string
   perSqFt: string
+  source: string
 }) {
   return (
     <Card>
-      <Row label={date} value={label} valueBold />
-      <Row label={priceLabel} value={price} valueBold trend={trend && <PriceTrend {...trend} />} />
+      <Row label={date} labelDim={false} trend={trend && <PriceTrend {...trend} />} />
       <div className="flex w-full items-start gap-2 py-1">
-        <p className="flex-1 text-[15px] leading-[1.26] tracking-[-0.5px]" style={{ color: 'var(--content-primary)' }}>
-          Public record
+        <p className="flex-1 text-[15px] font-bold leading-[1.26] tracking-[-0.5px]" style={{ color: 'var(--content-primary)' }}>
+          {eventLabel}
         </p>
-        <span className="text-[15px] leading-[1.26] tracking-[-0.5px] opacity-65" style={{ color: 'var(--content-primary)' }}>
-          {perSqFt} per ft²
-        </span>
+        <div className="flex items-end gap-1">
+          <span className="text-[15px] font-bold leading-[1.26] tracking-[-0.5px]" style={{ color: 'var(--content-primary)' }}>
+            {price}
+          </span>
+          <span className="text-[12px] leading-[1.26]" style={{ color: 'var(--content-tertiary)' }}>
+            /
+          </span>
+          <span className="text-[14px] leading-[1.26]" style={{ color: 'var(--content-tertiary)' }}>
+            {perSqFt}
+          </span>
+          <span className="text-[12px] leading-[1.26]" style={{ color: 'var(--content-tertiary)' }}>
+            per ft²
+          </span>
+        </div>
       </div>
+      <CardDivider />
+      <Row label={source} labelDim={false} />
     </Card>
   )
 }
@@ -144,17 +168,17 @@ function TaxYearCard({
   assessedValueTrend,
 }: {
   propertyTax: string
-  propertyTaxTrend: string
+  propertyTaxTrend?: string
   land: string
   additions: string
   assessedValue: string
-  assessedValueTrend: string
+  assessedValueTrend?: string
 }) {
   return (
     <Card>
-      <Row label="Property tax" value={propertyTax} trend={<PriceTrend dir="up" percent={propertyTaxTrend} />} />
-      <Row label="Land  + Additions" labelBold value={`${land} + ${additions}`} />
-      <Row label="Tax assessment" value={assessedValue} valueBold trend={<PriceTrend dir="up" percent={assessedValueTrend} />} />
+      <Row label="Property tax:" value={propertyTax} trend={propertyTaxTrend && <PriceTrend dir="up" percent={propertyTaxTrend} />} />
+      <Row label="Land  + Additions:" value={`${land} + ${additions}`} />
+      <Row label="Tax assessment:" value={assessedValue} trend={assessedValueTrend && <PriceTrend dir="up" percent={assessedValueTrend} />} />
     </Card>
   )
 }
@@ -180,16 +204,10 @@ function MortgageEventCard({
 }) {
   return (
     <Card>
-      <div className="flex w-full items-start gap-2.5 py-1">
-        <p className="flex-1 text-[15px] font-bold leading-[1.26] tracking-[-0.5px]" style={{ color: 'var(--content-primary)' }}>
-          {date}
-        </p>
-        <p className="text-[15px] font-bold leading-[1.26] tracking-[-0.5px]" style={{ color: 'var(--content-primary)' }}>
-          {type}
-        </p>
-      </div>
+      <Row label={date} labelDim={false} labelBold value={type} valueBold />
       <Row label="Loan amount:" value={loanAmount} valueBold />
       <Row label="Term:" value={term} />
+      <CardDivider />
       <div className="flex w-full items-start gap-2.5 py-1">
         <p className="flex-1 text-[15px] leading-[1.26] tracking-[-0.5px]" style={{ color: 'var(--content-primary)' }}>
           {lender}
@@ -252,33 +270,35 @@ function ListingDescriptionCard() {
 }
 
 // Priced against the 2,000 ft² home size from the Specs tab, ending at the
-// current $1,000,000 listing. The 2023 sale/purchase price and 2026 remodel
-// (see Specs > Condition: Remodel) match the Mortgage tab below.
+// current $1,000,000 listing. The Jan 2023 purchase (bought $820k, briefly
+// relisted at $820k, then sold at $850k) and 2026 remodel (see Specs >
+// Condition: Remodel) match the Mortgage tab below.
 function ListingsTab() {
   return (
     <div className="flex w-full flex-col items-start gap-6 pt-6">
       <ListingDescriptionCard />
       <YearGroup year="2026">
         <ListingEventCard
-          date="May 28, 2026"
-          label="Listed for sale"
-          priceLabel="Listed for:"
-          price="$1,000,000"
+          date="May 28"
           trend={{ dir: 'up', percent: '+4.2%' }}
+          eventLabel="Listed for sale"
+          price="$1,000,000"
           perSqFt="$500"
+          source="OZMLS"
         />
         <ListingEventCard
-          date="Feb 3, 2026"
-          label="Price change"
-          priceLabel="Listed for:"
-          price="$960,000"
+          date="Feb 3"
           trend={{ dir: 'up', percent: '+12.9%' }}
+          eventLabel="Price change"
+          price="$960,000"
           perSqFt="$480"
+          source="OZMLS"
         />
       </YearGroup>
       <YearGroup year="2023">
-        <ListingEventCard date="Apr 2, 2023" label="Sold" priceLabel="Sold for:" price="$850,000" perSqFt="$425" />
-        <ListingEventCard date="Jan 15, 2023" label="Listed for sale" priceLabel="Listed for:" price="$820,000" perSqFt="$410" />
+        <ListingEventCard date="Apr 2" trend={{ dir: 'up', percent: '+0.2%' }} eventLabel="Sold" price="$850,000" perSqFt="$425" source="Public Record" />
+        <ListingEventCard date="Jan 15" eventLabel="Listed for sale" price="$820,000" perSqFt="$410" source="OZMLS" />
+        <ListingEventCard date="Jan 1" eventLabel="Sold" price="$820,000" perSqFt="$410" source="Public Record" />
       </YearGroup>
     </div>
   )
@@ -288,6 +308,7 @@ function ListingsTab() {
 // market value and grows a few percent a year between reassessments. Land
 // value appreciates slowly (~1.5%/yr); additions jump more in 2025 as the
 // remodel from the Mortgage tab's equity loan gets reflected in the record.
+// The earliest year shown has no prior-year baseline, so it omits trends.
 function TaxRecordsTab() {
   const years = [
     {
@@ -311,20 +332,9 @@ function TaxRecordsTab() {
     {
       year: '2023',
       propertyTax: '$9,200',
-      propertyTaxTrend: '+2.2%',
       land: '$548,000',
       additions: '$292,000',
       assessedValue: '$840,000',
-      assessedValueTrend: '+2.4%',
-    },
-    {
-      year: '2022',
-      propertyTax: '$9,000',
-      propertyTaxTrend: '+2.5%',
-      land: '$540,000',
-      additions: '$280,000',
-      assessedValue: '$820,000',
-      assessedValueTrend: '+2.5%',
     },
   ]
   return (
@@ -347,7 +357,7 @@ function MortgageTab() {
     <div className="flex w-full flex-col items-start gap-5 pt-6">
       <YearGroup year="2025">
         <MortgageEventCard
-          date="Nov 23, 2025"
+          date="Nov 23"
           type="Equity loan"
           loanAmount="$160,000"
           term="15 yr"
@@ -359,7 +369,7 @@ function MortgageTab() {
       </YearGroup>
       <YearGroup year="2023">
         <MortgageEventCard
-          date="Apr 2, 2023"
+          date="Apr 2"
           type="Mortgage"
           loanAmount="$680,000"
           term="30 yr"

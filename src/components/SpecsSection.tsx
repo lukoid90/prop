@@ -177,7 +177,7 @@ function MlsSearchField() {
       style={{ borderColor: 'var(--border-resting)', background: 'var(--surface-lighter)' }}
     >
       <img src={iconDatabase} alt="" className="size-5 shrink-0" />
-      <p className="flex-1 truncate text-[15px] leading-[1.26] tracking-[-0.5px]" style={{ color: 'var(--content-primary)' }}>
+      <p className="flex-1 truncate text-center text-[15px] leading-[1.26] tracking-[-0.5px]" style={{ color: 'var(--content-primary)' }}>
         MLS Listing, Aug 16 2026
       </p>
       <button type="button" className="flex size-10 shrink-0 items-center justify-center rounded-lg">
