@@ -30,6 +30,10 @@ function App() {
   const [addContactOwner, setAddContactOwner] = useState<Owner | null>(null)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isPhotoViewerOpen, setIsPhotoViewerOpen] = useState(false)
+  const [bedrooms, setBedrooms] = useState('3')
+  const [bathrooms, setBathrooms] = useState('2')
+  const [homeSize, setHomeSize] = useState('2,000')
+  const [lotSize, setLotSize] = useState('24,500')
 
   const handleSaveNote = (message: string) => {
     const date = formatEntryTimestamp(new Date())
@@ -111,6 +115,14 @@ function App() {
           onOpenMap={() => setIsMapOpen(true)}
           onAddContact={setAddContactOwner}
           onOpenPhotos={() => setIsPhotoViewerOpen(true)}
+          bedrooms={bedrooms}
+          onChangeBedrooms={setBedrooms}
+          bathrooms={bathrooms}
+          onChangeBathrooms={setBathrooms}
+          homeSize={homeSize}
+          onChangeHomeSize={setHomeSize}
+          lotSize={lotSize}
+          onChangeLotSize={setLotSize}
         />
       </DeviceFrame>
     </div>

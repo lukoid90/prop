@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Plus, Sparkle, XCircle } from '@phosphor-icons/react'
+import { CaretUpDown, Plus, Sparkle, XCircle } from '@phosphor-icons/react'
 import iconBed from '../assets/icons/specs/icon-bed.svg'
 import iconBathtub from '../assets/icons/specs/icon-bathtub.svg'
 import iconFloorplan from '../assets/icons/specs/icon-floorplan.svg'
@@ -28,11 +28,17 @@ const AI_BORDER = '#9875a9'
 const AI_GRADIENT = 'linear-gradient(203deg, #9875a9 31.8%, #7f5a90 65.8%, #694b77 95.5%)'
 const AI_BORDER_GRADIENT = 'linear-gradient(226deg, #9875a9 31.82%, #7f5a90 65.81%, #694b77 95.49%)'
 const DASHED_BORDER = 'rgba(13,12,12,0.24)'
+const SQFT_PER_ACRE = 43560
 
 function formatThousands(raw: string) {
   const digits = raw.replace(/\D/g, '')
   if (!digits) return ''
   return Number(digits).toLocaleString('en-US')
+}
+
+export function sqFtToAcres(sqFt: string) {
+  const num = Number(sqFt.replace(/,/g, '')) || 0
+  return (num / SQFT_PER_ACRE).toFixed(2)
 }
 
 function Divider() {
@@ -165,6 +171,80 @@ function EditableSpecRow({
             <XCircle size={20} color="var(--content-tertiary)" />
           </button>
         )}
+      </div>
+    </div>
+  )
+}
+
+function LotSizeRow({ icon, valueSqFt, onChangeSqFt }: { icon: string; valueSqFt: string; onChangeSqFt: (value: string) => void }) {
+  const [unit, setUnit] = useState<'ft2' | 'acres'>('acres')
+  const [isFocused, setIsFocused] = useState(false)
+
+  const displayValue = unit === 'ft2' ? valueSqFt : valueSqFt ? sqFtToAcres(valueSqFt) : ''
+
+  const handleChange = (raw: string) => {
+    if (unit === 'ft2') {
+      onChangeSqFt(formatThousands(raw))
+      return
+    }
+    const cleaned = raw.replace(/[^\d.]/g, '')
+    if (!cleaned) {
+      onChangeSqFt('')
+      return
+    }
+    const acres = parseFloat(cleaned)
+    if (Number.isNaN(acres)) return
+    onChangeSqFt(Math.round(acres * SQFT_PER_ACRE).toLocaleString('en-US'))
+  }
+
+  return (
+    <div className="flex h-14 w-full items-center gap-2.5 border-b border-dashed py-2" style={{ borderColor: DASHED_BORDER }}>
+      <div
+        className="flex size-10 shrink-0 items-center justify-center rounded-lg border"
+        style={{ background: 'var(--border-default)', borderColor: '#f1e7e4' }}
+      >
+        <img src={icon} alt="" className="size-5" />
+      </div>
+      <p className="w-[108px] shrink-0 text-[15px] leading-[1.26] tracking-[-0.5px] opacity-65" style={{ color: 'var(--content-primary)' }}>
+        Lot size
+      </p>
+      <div className="flex min-w-0 flex-1 items-center gap-2">
+        <input
+          value={displayValue}
+          onChange={(e) => handleChange(e.target.value)}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          inputMode="decimal"
+          className="min-w-0 flex-1 border-0 bg-transparent p-0 text-[15px] leading-[1.26] tracking-[-0.5px] outline-none"
+          style={{ color: 'var(--content-primary)', caretColor: AI_BORDER }}
+        />
+        {isFocused && (
+          <button
+            type="button"
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={() => onChangeSqFt('')}
+            className="flex size-5 shrink-0 items-center justify-center"
+          >
+            <XCircle size={20} color="var(--content-tertiary)" />
+          </button>
+        )}
+      </div>
+      <div className="relative shrink-0">
+        <select
+          aria-label="Lot size unit"
+          value={unit}
+          onChange={(e) => setUnit(e.target.value as 'ft2' | 'acres')}
+          className="absolute inset-0 size-full cursor-pointer appearance-none opacity-0"
+        >
+          <option value="acres">acres</option>
+          <option value="ft2">ft²</option>
+        </select>
+        <div className="flex h-9 items-center justify-center gap-1 rounded-full px-[10px]" style={{ background: 'rgba(18,18,18,0.06)' }}>
+          <span className="text-[15px] leading-[1.26] tracking-[-0.5px]" style={{ color: 'var(--content-primary)' }}>
+            {unit === 'ft2' ? 'ft²' : 'acres'}
+          </span>
+          <CaretUpDown size={16} color="var(--content-primary)" />
+        </div>
       </div>
     </div>
   )
@@ -352,12 +432,25 @@ function IdentifiersSection() {
   )
 }
 
-export function SpecsSection() {
-  const [bedrooms, setBedrooms] = useState('3')
-  const [bathrooms, setBathrooms] = useState('2')
-  const [homeSize, setHomeSize] = useState('2,000')
-  const [lotSize, setLotSize] = useState('24,500')
-
+export function SpecsSection({
+  bedrooms,
+  onChangeBedrooms,
+  bathrooms,
+  onChangeBathrooms,
+  homeSize,
+  onChangeHomeSize,
+  lotSize,
+  onChangeLotSize,
+}: {
+  bedrooms: string
+  onChangeBedrooms: (value: string) => void
+  bathrooms: string
+  onChangeBathrooms: (value: string) => void
+  homeSize: string
+  onChangeHomeSize: (value: string) => void
+  lotSize: string
+  onChangeLotSize: (value: string) => void
+}) {
   return (
     <div className="flex w-full flex-col items-start px-4">
       <div className="w-full pb-4">
@@ -371,14 +464,14 @@ export function SpecsSection() {
           icon={iconBed}
           label="Bedrooms"
           value={bedrooms}
-          onChange={(v) => setBedrooms(v.replace(/\D/g, ''))}
+          onChange={(v) => onChangeBedrooms(v.replace(/\D/g, ''))}
           short
         />
         <EditableSpecRow
           icon={iconBathtub}
           label="Bathrooms"
           value={bathrooms}
-          onChange={(v) => setBathrooms(v.replace(/\D/g, ''))}
+          onChange={(v) => onChangeBathrooms(v.replace(/\D/g, ''))}
         />
         <EditableSpecRow
           icon={iconFloorplan}
@@ -388,18 +481,9 @@ export function SpecsSection() {
             </>
           }
           value={homeSize}
-          onChange={(v) => setHomeSize(formatThousands(v))}
+          onChange={(v) => onChangeHomeSize(formatThousands(v))}
         />
-        <EditableSpecRow
-          icon={iconLot}
-          label={
-            <>
-              Lot size, ft<sup>2</sup>
-            </>
-          }
-          value={lotSize}
-          onChange={(v) => setLotSize(formatThousands(v))}
-        />
+        <LotSizeRow icon={iconLot} valueSqFt={lotSize} onChangeSqFt={onChangeLotSize} />
         <SpecRow icon={iconHoa} label="HOA fees" value="$200 monthly" valueSub="$1200 billed annually" />
         <SpecRow icon={iconCalendarX} label="Year built" value="2010" />
         <SpecRow photo={specPropertyType} label="Property type" value="Single family" />

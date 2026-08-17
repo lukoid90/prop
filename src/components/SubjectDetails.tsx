@@ -1,8 +1,14 @@
 import { House, Buildings, SwimmingPool, HouseLine, Tree, Barbell, Phone, Mailbox } from '@phosphor-icons/react'
 import { Tag, MoreTag } from './Tag'
 import { LISTING_PATTERN_STYLE } from '../lib/listingPattern'
+import { sqFtToAcres } from './SpecsSection'
 
 const OWNER_ICON_COLOR = '#ae6a5b'
+const LISTING_PRICE = 1_000_000
+
+function formatUSD(n: number) {
+  return `$${Math.round(n).toLocaleString('en-US')}`
+}
 
 function Stat({ value, unit, label }: { value: string; unit?: string; label: string }) {
   return (
@@ -16,7 +22,23 @@ function Stat({ value, unit, label }: { value: string; unit?: string; label: str
   )
 }
 
-export function SubjectDetails() {
+export function SubjectDetails({
+  bedrooms,
+  bathrooms,
+  homeSize,
+  lotSize,
+}: {
+  bedrooms: string
+  bathrooms: string
+  homeSize: string
+  lotSize: string
+}) {
+  const lotSizeAcres = lotSize ? sqFtToAcres(lotSize) : '0'
+  const homeSizeNum = Number(homeSize.replace(/,/g, '')) || 0
+  const lotSizeAcresNum = Number(lotSizeAcres) || 0
+  const perFtHome = homeSizeNum ? formatUSD(LISTING_PRICE / homeSizeNum) : '—'
+  const perAcLot = lotSizeAcresNum ? formatUSD(LISTING_PRICE / lotSizeAcresNum) : '—'
+
   return (
     <div className="flex w-full flex-col items-center gap-6 px-4">
       <div className="flex w-full flex-col gap-4">
@@ -29,10 +51,10 @@ export function SubjectDetails() {
             </div>
           </div>
           <div className="flex items-center gap-1">
-            <Stat value="4" label="Bed" />
-            <Stat value="4" label="Bath" />
-            <Stat value="1,800" unit="ft²" label="Home" />
-            <Stat value="1.24" unit="/ac" label="Lot" />
+            <Stat value={bedrooms} label="Bed" />
+            <Stat value={bathrooms} label="Bath" />
+            <Stat value={homeSize} unit="ft²" label="Home" />
+            <Stat value={lotSizeAcres} unit="/ac" label="Lot" />
             <Stat value="$150" unit="/mo" label="HOA" />
           </div>
         </div>
@@ -70,9 +92,9 @@ export function SubjectDetails() {
         <div className="relative flex w-full flex-col items-center gap-1 overflow-hidden rounded-2xl py-3" style={{ background: 'var(--surface-lighter)' }}>
           <div className="pointer-events-none absolute inset-0 opacity-12" style={LISTING_PATTERN_STYLE} />
           <div className="relative flex w-full items-center gap-2 px-4 pt-1 text-[var(--content-primary)]">
-            <ListingStat className="w-[108px]" label="Listed for" value="$1,000,000" />
-            <ListingStat className="w-[108px]" label="Per /ft² Home" value="$879" />
-            <ListingStat className="w-[102px]" label="Per/ac Lot" value="$431" />
+            <ListingStat className="w-[108px]" label="Listed for" value={formatUSD(LISTING_PRICE)} />
+            <ListingStat className="w-[108px]" label="Per /ft² Home" value={perFtHome} />
+            <ListingStat className="w-[102px]" label="Per/ac Lot" value={perAcLot} />
           </div>
           <div className="flex w-full items-center gap-2 px-4 pt-1 text-[var(--content-primary)]">
             <ListingStat className="w-[108px]" label="Listed on" value="May 28" />

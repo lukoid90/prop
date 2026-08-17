@@ -26,6 +26,14 @@ export function PropertyScreen({
   onOpenMap,
   onAddContact,
   onOpenPhotos,
+  bedrooms,
+  onChangeBedrooms,
+  bathrooms,
+  onChangeBathrooms,
+  homeSize,
+  onChangeHomeSize,
+  lotSize,
+  onChangeLotSize,
 }: {
   notes: Note[]
   onOpenAddNote: () => void
@@ -40,12 +48,29 @@ export function PropertyScreen({
   onOpenMap: () => void
   onAddContact: (owner: Owner) => void
   onOpenPhotos: () => void
+  bedrooms: string
+  onChangeBedrooms: (value: string) => void
+  bathrooms: string
+  onChangeBathrooms: (value: string) => void
+  homeSize: string
+  onChangeHomeSize: (value: string) => void
+  lotSize: string
+  onChangeLotSize: (value: string) => void
 }) {
   if (activeTab === 'Specs') {
     return (
       <div className="flex flex-col pb-[120px]">
         <div style={{ height: 126 }} aria-hidden />
-        <SpecsSection />
+        <SpecsSection
+          bedrooms={bedrooms}
+          onChangeBedrooms={onChangeBedrooms}
+          bathrooms={bathrooms}
+          onChangeBathrooms={onChangeBathrooms}
+          homeSize={homeSize}
+          onChangeHomeSize={onChangeHomeSize}
+          lotSize={lotSize}
+          onChangeLotSize={onChangeLotSize}
+        />
       </div>
     )
   }
@@ -72,7 +97,7 @@ export function PropertyScreen({
     <div className="flex flex-col gap-6 pb-[120px]">
       <PropertyPhoto onOpen={onOpenPhotos} />
       <PropertyNav active={activeTab} onChange={onTabChange} />
-      <SubjectDetails />
+      <SubjectDetails bedrooms={bedrooms} bathrooms={bathrooms} homeSize={homeSize} lotSize={lotSize} />
       <div className="flex flex-col gap-8">
         <ActiveSection
           priceDropAlert={priceDropAlert}
