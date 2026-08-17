@@ -17,3 +17,11 @@ export interface StatusAlertEntry {
   statuses: string[]
   removeWhenSold: boolean
 }
+
+export interface Owner {
+  id: string
+  name: string
+  avatar: string
+  phone: string
+  address: string
+}

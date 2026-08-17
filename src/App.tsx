@@ -9,9 +9,10 @@ import { StatusAlertSheet, type StatusAlert } from './components/StatusAlertShee
 import { ShareSheet } from './components/ShareSheet'
 import { BuyerSearchSheet } from './components/BuyerSearchSheet'
 import { MapSheet } from './components/MapSheet'
+import { AddContactSheet } from './components/AddContactSheet'
 import { NAV_TABS } from './components/PropertyNav'
 import { formatEntryTimestamp } from './lib/formatEntryTimestamp'
-import type { Note, PriceDropAlertEntry, StatusAlertEntry } from './types'
+import type { Note, Owner, PriceDropAlertEntry, StatusAlertEntry } from './types'
 
 function App() {
   const [notes, setNotes] = useState<Note[]>([])
@@ -24,6 +25,7 @@ function App() {
   const [isSharing, setIsSharing] = useState(false)
   const [isAddingToBuyerSearch, setIsAddingToBuyerSearch] = useState(false)
   const [isMapOpen, setIsMapOpen] = useState(false)
+  const [addContactOwner, setAddContactOwner] = useState<Owner | null>(null)
 
   const handleSaveNote = (message: string) => {
     const date = formatEntryTimestamp(new Date())
@@ -58,7 +60,7 @@ function App() {
       <DeviceFrame
         header={(scrollProgress) => (
           <Header
-            scrollProgress={activeTab === 'Specs' || activeTab === 'Records' ? 1 : scrollProgress}
+            scrollProgress={activeTab === 'Specs' || activeTab === 'Records' || activeTab === 'Owners' ? 1 : scrollProgress}
             activeTab={activeTab}
             onTabChange={setActiveTab}
           />
@@ -84,6 +86,7 @@ function App() {
             <ShareSheet open={isSharing} onClose={() => setIsSharing(false)} />
             <BuyerSearchSheet open={isAddingToBuyerSearch} onClose={() => setIsAddingToBuyerSearch(false)} />
             <MapSheet open={isMapOpen} onClose={() => setIsMapOpen(false)} />
+            <AddContactSheet owner={addContactOwner} onClose={() => setAddContactOwner(null)} />
           </>
         }
       >
@@ -99,6 +102,7 @@ function App() {
           onShareProperty={() => setIsSharing(true)}
           onAddToBuyerSearch={() => setIsAddingToBuyerSearch(true)}
           onOpenMap={() => setIsMapOpen(true)}
+          onAddContact={setAddContactOwner}
         />
       </DeviceFrame>
     </div>
