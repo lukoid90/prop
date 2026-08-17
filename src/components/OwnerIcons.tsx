@@ -1,6 +1,10 @@
 export function AddContactIcon({ size = 24, color = '#494341' }: { size?: number; color?: string }) {
+  // Native art is 27x29 (the "+" badge deliberately overflows a 24x24 box),
+  // so scale both dimensions together to keep that badge from distorting.
+  const width = (size * 27) / 24
+  const height = (size * 29) / 24
   return (
-    <svg width={size} height={size} viewBox="0 0 27 29" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width={width} height={height} viewBox="0 0 27 29" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
         d="M12.75 13.5C14.4069 13.5 15.75 12.1569 15.75 10.5C15.75 8.84315 14.4069 7.5 12.75 7.5C11.0931 7.5 9.75 8.84315 9.75 10.5C9.75 12.1569 11.0931 13.5 12.75 13.5Z"
         stroke={color}

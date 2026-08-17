@@ -25,6 +25,7 @@ export function PropertyScreen({
   onAddToBuyerSearch,
   onOpenMap,
   onAddContact,
+  onOpenPhotos,
 }: {
   notes: Note[]
   onOpenAddNote: () => void
@@ -38,6 +39,7 @@ export function PropertyScreen({
   onAddToBuyerSearch: () => void
   onOpenMap: () => void
   onAddContact: (owner: Owner) => void
+  onOpenPhotos: () => void
 }) {
   if (activeTab === 'Specs') {
     return (
@@ -68,7 +70,7 @@ export function PropertyScreen({
 
   return (
     <div className="flex flex-col gap-6 pb-[120px]">
-      <PropertyPhoto />
+      <PropertyPhoto onOpen={onOpenPhotos} />
       <PropertyNav active={activeTab} onChange={onTabChange} />
       <SubjectDetails />
       <div className="flex flex-col gap-8">

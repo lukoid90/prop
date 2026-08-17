@@ -42,7 +42,12 @@ const OTHER_OWNERS: Owner[] = [
 
 function OwnerCard({ owner, onAddContact }: { owner: Owner; onAddContact: () => void }) {
   return (
-    <div className="flex w-full items-center justify-between rounded-2xl border border-[var(--border-dimmer)] bg-[var(--surface-lighter)] py-3 pl-3 pr-5">
+    <button
+      type="button"
+      aria-label={`Add ${owner.name} to contacts`}
+      onClick={onAddContact}
+      className="flex w-full items-center justify-between rounded-2xl border border-[var(--border-dimmer)] bg-[var(--surface-lighter)] py-3 pl-3 pr-5 text-left"
+    >
       <div className="flex items-center gap-4">
         <img src={owner.avatar} alt="" className="size-11 shrink-0 rounded-full object-cover" />
         <div className="flex flex-col items-start whitespace-nowrap">
@@ -50,10 +55,8 @@ function OwnerCard({ owner, onAddContact }: { owner: Owner; onAddContact: () => 
           <p className="text-[14px] leading-[1.48] tracking-[0.25px] text-[var(--content-tertiary)]">Add to contacts</p>
         </div>
       </div>
-      <button type="button" aria-label={`Add ${owner.name} to contacts`} onClick={onAddContact} className="shrink-0">
-        <AddContactIcon size={24} />
-      </button>
-    </div>
+      <AddContactIcon size={24} />
+    </button>
   )
 }
 

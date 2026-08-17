@@ -8,10 +8,12 @@ export function Header({
   scrollProgress,
   activeTab,
   onTabChange,
+  onOpenMenu,
 }: {
   scrollProgress: number
   activeTab: string
   onTabChange: (tab: string) => void
+  onOpenMenu: () => void
 }) {
   const scrolled = scrollProgress > 0.5
 
@@ -39,7 +41,7 @@ export function Header({
               <p className="text-[14px] font-bold leading-[1.26] tracking-[-0.5px]">780 Correa Way, MO 42802</p>
               <p className="text-[14px] leading-[1.26] tracking-[-0.5px]">Listed for $1m • May 28</p>
             </div>
-            <GlassButton className="pointer-events-auto size-10 shrink-0">
+            <GlassButton onClick={onOpenMenu} aria-label="More options" className="pointer-events-auto size-10 shrink-0">
               <DotsThree size={17} weight="bold" color="var(--content-primary)" />
             </GlassButton>
           </div>

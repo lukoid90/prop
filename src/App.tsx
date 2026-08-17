@@ -10,6 +10,8 @@ import { ShareSheet } from './components/ShareSheet'
 import { BuyerSearchSheet } from './components/BuyerSearchSheet'
 import { MapSheet } from './components/MapSheet'
 import { AddContactSheet } from './components/AddContactSheet'
+import { PropertyMenu } from './components/PropertyMenu'
+import { PhotoViewer } from './components/PhotoViewer'
 import { NAV_TABS } from './components/PropertyNav'
 import { formatEntryTimestamp } from './lib/formatEntryTimestamp'
 import type { Note, Owner, PriceDropAlertEntry, StatusAlertEntry } from './types'
@@ -26,6 +28,8 @@ function App() {
   const [isAddingToBuyerSearch, setIsAddingToBuyerSearch] = useState(false)
   const [isMapOpen, setIsMapOpen] = useState(false)
   const [addContactOwner, setAddContactOwner] = useState<Owner | null>(null)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isPhotoViewerOpen, setIsPhotoViewerOpen] = useState(false)
 
   const handleSaveNote = (message: string) => {
     const date = formatEntryTimestamp(new Date())
@@ -63,6 +67,7 @@ function App() {
             scrollProgress={activeTab === 'Specs' || activeTab === 'Records' || activeTab === 'Owners' ? 1 : scrollProgress}
             activeTab={activeTab}
             onTabChange={setActiveTab}
+            onOpenMenu={() => setIsMenuOpen(true)}
           />
         )}
         dock={<PropertyDock onShareProperty={() => setIsSharing(true)} />}
@@ -87,6 +92,8 @@ function App() {
             <BuyerSearchSheet open={isAddingToBuyerSearch} onClose={() => setIsAddingToBuyerSearch(false)} />
             <MapSheet open={isMapOpen} onClose={() => setIsMapOpen(false)} />
             <AddContactSheet owner={addContactOwner} onClose={() => setAddContactOwner(null)} />
+            <PropertyMenu open={isMenuOpen} onClose={() => setIsMenuOpen(false)} onShareProperty={() => setIsSharing(true)} />
+            <PhotoViewer open={isPhotoViewerOpen} onClose={() => setIsPhotoViewerOpen(false)} />
           </>
         }
       >
@@ -103,6 +110,7 @@ function App() {
           onAddToBuyerSearch={() => setIsAddingToBuyerSearch(true)}
           onOpenMap={() => setIsMapOpen(true)}
           onAddContact={setAddContactOwner}
+          onOpenPhotos={() => setIsPhotoViewerOpen(true)}
         />
       </DeviceFrame>
     </div>
