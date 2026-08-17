@@ -2,6 +2,8 @@ import { House, Buildings, SwimmingPool, HouseLine, Tree, Barbell, Phone, Mailbo
 import { Tag, MoreTag } from './Tag'
 import { LISTING_PATTERN_STYLE } from '../lib/listingPattern'
 
+const OWNER_ICON_COLOR = '#ae6a5b'
+
 function Stat({ value, unit, label }: { value: string; unit?: string; label: string }) {
   return (
     <div className="flex h-[46px] w-[72px] shrink-0 flex-col items-start gap-0.5">
@@ -52,21 +54,11 @@ export function SubjectDetails() {
       >
         <div className="flex min-w-0 flex-1 flex-col items-start">
           <p className="text-[14px] leading-[1.48] tracking-[0.25px] text-[var(--content-tertiary)]">Owner</p>
-          <div className="flex flex-col items-start gap-[3px]">
+          <div className="flex items-center gap-2 pt-0.5">
             <p className="text-[16px] leading-[1.48] tracking-[0px] text-[var(--content-primary)]">Romelu Bayo</p>
-            <div className="flex items-center gap-2">
-              <div className="flex items-center gap-1">
-                <Phone size={18} color="var(--content-secondary)" />
-                <span className="whitespace-nowrap text-[14px] leading-[1.48] tracking-[0.25px] text-[var(--content-secondary)]">
-                  (505) 872 ••••
-                </span>
-              </div>
-              <div className="flex items-center gap-1">
-                <Mailbox size={18} color="var(--content-secondary)" />
-                <span className="whitespace-nowrap text-[14px] leading-[1.48] tracking-[0.25px] text-[var(--content-secondary)]">
-                  •••• MO 38002
-                </span>
-              </div>
+            <div className="flex items-center gap-1">
+              <Phone size={18} color={OWNER_ICON_COLOR} />
+              <Mailbox size={18} color={OWNER_ICON_COLOR} />
             </div>
           </div>
         </div>

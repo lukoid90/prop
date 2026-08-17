@@ -8,6 +8,7 @@ import { AddAlertSheet, type PriceDropAlert } from './components/AddAlertSheet'
 import { StatusAlertSheet, type StatusAlert } from './components/StatusAlertSheet'
 import { ShareSheet } from './components/ShareSheet'
 import { BuyerSearchSheet } from './components/BuyerSearchSheet'
+import { MapSheet } from './components/MapSheet'
 import { NAV_TABS } from './components/PropertyNav'
 import { formatEntryTimestamp } from './lib/formatEntryTimestamp'
 import type { Note, PriceDropAlertEntry, StatusAlertEntry } from './types'
@@ -22,6 +23,7 @@ function App() {
   const [isAddingStatusAlert, setIsAddingStatusAlert] = useState(false)
   const [isSharing, setIsSharing] = useState(false)
   const [isAddingToBuyerSearch, setIsAddingToBuyerSearch] = useState(false)
+  const [isMapOpen, setIsMapOpen] = useState(false)
 
   const handleSaveNote = (message: string) => {
     const date = formatEntryTimestamp(new Date())
@@ -81,6 +83,7 @@ function App() {
             />
             <ShareSheet open={isSharing} onClose={() => setIsSharing(false)} />
             <BuyerSearchSheet open={isAddingToBuyerSearch} onClose={() => setIsAddingToBuyerSearch(false)} />
+            <MapSheet open={isMapOpen} onClose={() => setIsMapOpen(false)} />
           </>
         }
       >
@@ -95,6 +98,7 @@ function App() {
           onOpenStatusAlert={() => setIsAddingStatusAlert(true)}
           onShareProperty={() => setIsSharing(true)}
           onAddToBuyerSearch={() => setIsAddingToBuyerSearch(true)}
+          onOpenMap={() => setIsMapOpen(true)}
         />
       </DeviceFrame>
     </div>

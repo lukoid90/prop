@@ -22,6 +22,7 @@ export function PropertyScreen({
   onOpenStatusAlert,
   onShareProperty,
   onAddToBuyerSearch,
+  onOpenMap,
 }: {
   notes: Note[]
   onOpenAddNote: () => void
@@ -33,6 +34,7 @@ export function PropertyScreen({
   onOpenStatusAlert: () => void
   onShareProperty: () => void
   onAddToBuyerSearch: () => void
+  onOpenMap: () => void
 }) {
   if (activeTab === 'Specs') {
     return (
@@ -74,7 +76,7 @@ export function PropertyScreen({
           <SendToClientSection onShareProperty={onShareProperty} onAddToBuyerSearch={onAddToBuyerSearch} />
           <DigDeeperSection />
           <NotesSection notes={notes} onOpenAdd={onOpenAddNote} />
-          <ExploreAreaSection />
+          <ExploreAreaSection onOpenMap={onOpenMap} />
         </div>
       </div>
     </div>
