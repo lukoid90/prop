@@ -17,36 +17,44 @@ const OTHER_ALERTS = [
 export function AlertsSection({
   onOpenPriceDropAlert,
   onOpenStatusAlert,
+  hasPriceDropAlert,
+  hasStatusAlert,
 }: {
   onOpenPriceDropAlert: () => void
   onOpenStatusAlert: () => void
+  hasPriceDropAlert: boolean
+  hasStatusAlert: boolean
 }) {
   return (
     <div className="flex w-full flex-col items-start gap-6">
       <p className="w-full px-4 text-[20px] font-bold leading-[1.26] text-[var(--content-primary)]">Get alerts</p>
       <div className="flex w-full gap-3 overflow-x-auto px-4 [scrollbar-width:none]">
-        <button type="button" onClick={onOpenPriceDropAlert} className="shrink-0 text-left">
-          <Tile
-            width={166}
-            imgHeight={163}
-            image={priceDrop}
-            alt="Price Drop"
-            eyebrow="Get an alert"
-            title="Price Drop"
-            icon={<Plus size={20} />}
-          />
-        </button>
-        <button type="button" onClick={onOpenStatusAlert} className="shrink-0 text-left">
-          <Tile
-            width={166}
-            imgHeight={163}
-            image={statusChange}
-            alt="Status Change"
-            eyebrow="Get an alert"
-            title="Status Change"
-            icon={<Plus size={20} />}
-          />
-        </button>
+        {!hasPriceDropAlert && (
+          <button type="button" onClick={onOpenPriceDropAlert} className="shrink-0 text-left">
+            <Tile
+              width={166}
+              imgHeight={163}
+              image={priceDrop}
+              alt="Price Drop"
+              eyebrow="Get an alert"
+              title="Price Drop"
+              icon={<Plus size={20} />}
+            />
+          </button>
+        )}
+        {!hasStatusAlert && (
+          <button type="button" onClick={onOpenStatusAlert} className="shrink-0 text-left">
+            <Tile
+              width={166}
+              imgHeight={163}
+              image={statusChange}
+              alt="Status Change"
+              eyebrow="Get an alert"
+              title="Status Change"
+              icon={<Plus size={20} />}
+            />
+          </button>
+        )}
         {OTHER_ALERTS.map(({ title, image }) => (
           <Tile
             key={title}

@@ -15,9 +15,9 @@ function App() {
   const [notes, setNotes] = useState<Note[]>([])
   const [isAddingNote, setIsAddingNote] = useState(false)
   const [activeTab, setActiveTab] = useState(NAV_TABS[0])
-  const [priceDropAlerts, setPriceDropAlerts] = useState<PriceDropAlertEntry[]>([])
+  const [priceDropAlert, setPriceDropAlert] = useState<PriceDropAlertEntry | null>(null)
   const [isAddingAlert, setIsAddingAlert] = useState(false)
-  const [statusAlerts, setStatusAlerts] = useState<StatusAlertEntry[]>([])
+  const [statusAlert, setStatusAlert] = useState<StatusAlertEntry | null>(null)
   const [isAddingStatusAlert, setIsAddingStatusAlert] = useState(false)
   const [isSharing, setIsSharing] = useState(false)
 
@@ -29,13 +29,23 @@ function App() {
 
   const handleSaveAlert = (alert: PriceDropAlert) => {
     const date = formatEntryTimestamp(new Date())
-    setPriceDropAlerts((prev) => [{ id: crypto.randomUUID(), date, ...alert }, ...prev])
+    setPriceDropAlert({ id: priceDropAlert?.id ?? crypto.randomUUID(), date, ...alert })
+    setIsAddingAlert(false)
+  }
+
+  const handleRemoveAlert = () => {
+    setPriceDropAlert(null)
     setIsAddingAlert(false)
   }
 
   const handleSaveStatusAlert = (alert: StatusAlert) => {
     const date = formatEntryTimestamp(new Date())
-    setStatusAlerts((prev) => [{ id: crypto.randomUUID(), date, ...alert }, ...prev])
+    setStatusAlert({ id: statusAlert?.id ?? crypto.randomUUID(), date, ...alert })
+    setIsAddingStatusAlert(false)
+  }
+
+  const handleRemoveStatusAlert = () => {
+    setStatusAlert(null)
     setIsAddingStatusAlert(false)
   }
 
@@ -53,11 +63,19 @@ function App() {
         overlay={
           <>
             <NoteSheet open={isAddingNote} onClose={() => setIsAddingNote(false)} onSave={handleSaveNote} />
-            <AddAlertSheet open={isAddingAlert} onClose={() => setIsAddingAlert(false)} onSave={handleSaveAlert} />
+            <AddAlertSheet
+              open={isAddingAlert}
+              initialAlert={priceDropAlert}
+              onClose={() => setIsAddingAlert(false)}
+              onSave={handleSaveAlert}
+              onRemove={handleRemoveAlert}
+            />
             <StatusAlertSheet
               open={isAddingStatusAlert}
+              initialAlert={statusAlert}
               onClose={() => setIsAddingStatusAlert(false)}
               onSave={handleSaveStatusAlert}
+              onRemove={handleRemoveStatusAlert}
             />
             <ShareSheet open={isSharing} onClose={() => setIsSharing(false)} />
           </>
@@ -68,9 +86,9 @@ function App() {
           onOpenAddNote={() => setIsAddingNote(true)}
           activeTab={activeTab}
           onTabChange={setActiveTab}
-          priceDropAlerts={priceDropAlerts}
+          priceDropAlert={priceDropAlert}
           onOpenPriceDropAlert={() => setIsAddingAlert(true)}
-          statusAlerts={statusAlerts}
+          statusAlert={statusAlert}
           onOpenStatusAlert={() => setIsAddingStatusAlert(true)}
           onShareProperty={() => setIsSharing(true)}
         />

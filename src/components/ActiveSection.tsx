@@ -15,50 +15,48 @@ function describeStatusAlert(alert: StatusAlertEntry) {
 }
 
 export function ActiveSection({
-  priceDropAlerts,
-  statusAlerts,
+  priceDropAlert,
+  statusAlert,
+  onEditPriceDropAlert,
+  onEditStatusAlert,
 }: {
-  priceDropAlerts: PriceDropAlertEntry[]
-  statusAlerts: StatusAlertEntry[]
+  priceDropAlert: PriceDropAlertEntry | null
+  statusAlert: StatusAlertEntry | null
+  onEditPriceDropAlert: () => void
+  onEditStatusAlert: () => void
 }) {
+  if (!priceDropAlert && !statusAlert) return null
+
   return (
     <div className="flex w-full flex-col items-start gap-6 px-4">
       <p className="text-[20px] font-bold leading-[1.26] text-[var(--content-primary)]">Active</p>
       <div className="flex w-full flex-col gap-4">
-        {priceDropAlerts.map((alert) => (
+        {priceDropAlert && (
           <NotepadRow
-            key={alert.id}
             avatarImage={priceDrop}
-            topLine={{ text: alert.date, size: 'small' }}
-            bottomLine={{ text: describeAlert(alert), size: 'large' }}
+            topLine={{ text: priceDropAlert.date, size: 'small' }}
+            bottomLine={{ text: describeAlert(priceDropAlert), size: 'large' }}
             background={ROW_BG}
-            action={<PencilSimple size={20} />}
+            action={
+              <button type="button" onClick={onEditPriceDropAlert} aria-label="Edit price drop alert">
+                <PencilSimple size={20} />
+              </button>
+            }
           />
-        ))}
-        {statusAlerts.map((alert) => (
+        )}
+        {statusAlert && (
           <NotepadRow
-            key={alert.id}
             avatarImage={statusChange}
-            topLine={{ text: alert.date, size: 'small' }}
-            bottomLine={{ text: describeStatusAlert(alert), size: 'large' }}
+            topLine={{ text: statusAlert.date, size: 'small' }}
+            bottomLine={{ text: describeStatusAlert(statusAlert), size: 'large' }}
             background={ROW_BG}
-            action={<PencilSimple size={20} />}
+            action={
+              <button type="button" onClick={onEditStatusAlert} aria-label="Edit status change alert">
+                <PencilSimple size={20} />
+              </button>
+            }
           />
-        ))}
-        <NotepadRow
-          avatarImage={statusChange}
-          topLine={{ text: 'Yesterday', size: 'small' }}
-          bottomLine={{ text: 'Status Change', size: 'large' }}
-          background={ROW_BG}
-          action={<PencilSimple size={20} />}
-        />
-        <NotepadRow
-          avatarImage={priceDrop}
-          topLine={{ text: 'Aug 14', size: 'small' }}
-          bottomLine={{ text: '1% Price Drop', size: 'large' }}
-          background={ROW_BG}
-          action={<PencilSimple size={20} />}
-        />
+        )}
       </div>
     </div>
   )

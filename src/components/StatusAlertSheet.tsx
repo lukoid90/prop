@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { X, Tag } from '@phosphor-icons/react'
 import propertyPhoto from '../assets/images/property-photo.png'
 import { GlassButton } from './GlassButton'
+import type { StatusAlertEntry } from '../types'
 
 const SHEET_EASING = 'cubic-bezier(0.32, 0.72, 0, 1)'
 const SHEET_DURATION_MS = 420
@@ -65,13 +66,18 @@ function ToggleRow({ label, on, onChange }: { label: string; on: boolean; onChan
 
 export function StatusAlertSheet({
   open,
+  initialAlert,
   onClose,
   onSave,
+  onRemove,
 }: {
   open: boolean
+  initialAlert?: StatusAlertEntry | null
   onClose: () => void
   onSave: (alert: StatusAlert) => void
+  onRemove?: () => void
 }) {
+  const isEditing = !!initialAlert
   const [selected, setSelected] = useState<Record<string, boolean>>(() =>
     Object.fromEntries(STATUS_OPTIONS.map((s) => [s, true])),
   )
@@ -79,9 +85,14 @@ export function StatusAlertSheet({
 
   useEffect(() => {
     if (!open) return
-    setSelected(Object.fromEntries(STATUS_OPTIONS.map((s) => [s, true])))
-    setRemoveWhenSold(true)
-  }, [open])
+    if (initialAlert) {
+      setSelected(Object.fromEntries(STATUS_OPTIONS.map((s) => [s, initialAlert.statuses.includes(s)])))
+      setRemoveWhenSold(initialAlert.removeWhenSold)
+    } else {
+      setSelected(Object.fromEntries(STATUS_OPTIONS.map((s) => [s, true])))
+      setRemoveWhenSold(true)
+    }
+  }, [open, initialAlert])
 
   const canSave = STATUS_OPTIONS.some((s) => selected[s])
 
@@ -120,7 +131,7 @@ export function StatusAlertSheet({
             className="h-10 px-4"
           >
             <span className="text-[15px] font-bold leading-[1.26] tracking-[-0.5px] text-[var(--content-inverse)]">
-              Set alert
+              {isEditing ? 'Update alert' : 'Set alert'}
             </span>
           </GlassButton>
         </div>
@@ -160,6 +171,12 @@ export function StatusAlertSheet({
           <div className="flex w-full flex-col rounded-2xl border-[0.5px] border-[#cdc7c4] bg-[#f1e7e4] px-3 py-4">
             <ToggleRow label="Remove alert when sold" on={removeWhenSold} onChange={() => setRemoveWhenSold((v) => !v)} />
           </div>
+
+          {isEditing && onRemove && (
+            <button type="button" onClick={onRemove} className="pt-2 text-[15px] font-bold leading-[1.26] tracking-[-0.5px]" style={{ color: '#c34137' }}>
+              Remove alert
+            </button>
+          )}
         </div>
       </div>
     </div>

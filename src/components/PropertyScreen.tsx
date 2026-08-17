@@ -16,9 +16,9 @@ export function PropertyScreen({
   onOpenAddNote,
   activeTab,
   onTabChange,
-  priceDropAlerts,
+  priceDropAlert,
   onOpenPriceDropAlert,
-  statusAlerts,
+  statusAlert,
   onOpenStatusAlert,
   onShareProperty,
 }: {
@@ -26,9 +26,9 @@ export function PropertyScreen({
   onOpenAddNote: () => void
   activeTab: string
   onTabChange: (tab: string) => void
-  priceDropAlerts: PriceDropAlertEntry[]
+  priceDropAlert: PriceDropAlertEntry | null
   onOpenPriceDropAlert: () => void
-  statusAlerts: StatusAlertEntry[]
+  statusAlert: StatusAlertEntry | null
   onOpenStatusAlert: () => void
   onShareProperty: () => void
 }) {
@@ -56,8 +56,18 @@ export function PropertyScreen({
       <PropertyNav active={activeTab} onChange={onTabChange} />
       <SubjectDetails />
       <div className="flex flex-col gap-8">
-        <ActiveSection priceDropAlerts={priceDropAlerts} statusAlerts={statusAlerts} />
-        <AlertsSection onOpenPriceDropAlert={onOpenPriceDropAlert} onOpenStatusAlert={onOpenStatusAlert} />
+        <ActiveSection
+          priceDropAlert={priceDropAlert}
+          statusAlert={statusAlert}
+          onEditPriceDropAlert={onOpenPriceDropAlert}
+          onEditStatusAlert={onOpenStatusAlert}
+        />
+        <AlertsSection
+          onOpenPriceDropAlert={onOpenPriceDropAlert}
+          onOpenStatusAlert={onOpenStatusAlert}
+          hasPriceDropAlert={!!priceDropAlert}
+          hasStatusAlert={!!statusAlert}
+        />
         <div className="flex flex-col gap-10">
           <SendToClientSection onShareProperty={onShareProperty} />
           <DigDeeperSection />

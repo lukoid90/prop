@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { X, TrendDown } from '@phosphor-icons/react'
 import propertyPhoto from '../assets/images/property-photo.png'
 import { GlassButton } from './GlassButton'
+import type { PriceDropAlertEntry } from '../types'
 
 const SHEET_EASING = 'cubic-bezier(0.32, 0.72, 0, 1)'
 const SHEET_DURATION_MS = 420
@@ -30,13 +31,18 @@ function formatCompactUSD(n: number) {
 
 export function AddAlertSheet({
   open,
+  initialAlert,
   onClose,
   onSave,
+  onRemove,
 }: {
   open: boolean
+  initialAlert?: PriceDropAlertEntry | null
   onClose: () => void
   onSave: (alert: PriceDropAlert) => void
+  onRemove?: () => void
 }) {
+  const isEditing = !!initialAlert
   const [unit, setUnit] = useState<'%' | '$'>('%')
   const [presetIndex, setPresetIndex] = useState<number | null>(1)
   const [otherValue, setOtherValue] = useState('')
@@ -44,10 +50,18 @@ export function AddAlertSheet({
 
   useEffect(() => {
     if (!open) return
-    setUnit('%')
-    setPresetIndex(1)
-    setOtherValue('')
-  }, [open])
+    if (initialAlert) {
+      const presets = initialAlert.unit === '%' ? PERCENT_PRESETS : DOLLAR_PRESETS
+      const idx = presets.indexOf(initialAlert.value)
+      setUnit(initialAlert.unit)
+      setPresetIndex(idx >= 0 ? idx : null)
+      setOtherValue(idx >= 0 ? '' : String(initialAlert.value))
+    } else {
+      setUnit('%')
+      setPresetIndex(1)
+      setOtherValue('')
+    }
+  }, [open, initialAlert])
 
   const presets = unit === '%' ? PERCENT_PRESETS : DOLLAR_PRESETS
   const isOther = presetIndex === null
@@ -89,7 +103,7 @@ export function AddAlertSheet({
             className="h-10 px-4"
           >
             <span className="text-[15px] font-bold leading-[1.26] tracking-[-0.5px] text-[var(--content-inverse)]">
-              Set alert
+              {isEditing ? 'Update alert' : 'Set alert'}
             </span>
           </GlassButton>
         </div>
@@ -205,6 +219,12 @@ export function AddAlertSheet({
               </p>
             </div>
           </div>
+
+          {isEditing && onRemove && (
+            <button type="button" onClick={onRemove} className="pt-2 text-[15px] font-bold leading-[1.26] tracking-[-0.5px]" style={{ color: '#c34137' }}>
+              Remove alert
+            </button>
+          )}
         </div>
       </div>
     </div>
