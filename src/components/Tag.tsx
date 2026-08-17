@@ -10,11 +10,14 @@ export function Tag({ icon, label }: { icon?: ReactNode; label: string }) {
   )
 }
 
-export function MoreTag({ label = 'More' }: { label?: string }) {
+export function MoreTag({ label = 'More', variant = 'default' }: { label?: string; variant?: 'default' | 'success' }) {
+  const color = variant === 'success' ? '#469b70' : 'var(--content-primary)'
   return (
-    <div className="flex h-6 shrink-0 items-center justify-center gap-[2px] rounded-full border-[0.5px] border-[var(--content-primary)] py-1 pl-[10px] pr-2">
-      <span className="text-[12px] leading-[1.26] tracking-[0.25px] text-[var(--content-primary)]">{label}</span>
-      <ArrowRight size={13} />
+    <div className="flex h-6 shrink-0 items-center justify-center gap-[2px] rounded-full border-[0.5px] py-1 pl-[10px] pr-2" style={{ borderColor: color }}>
+      <span className="text-[12px] leading-[1.26] tracking-[0.25px]" style={{ color }}>
+        {label}
+      </span>
+      <ArrowRight size={13} color={color} />
     </div>
   )
 }

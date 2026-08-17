@@ -85,8 +85,8 @@ export function SubjectDetails() {
           <div className="flex w-full items-center gap-2 px-4 pt-1 text-[var(--content-primary)]">
             <ListingStat className="w-[108px]" label="Listed on" value="May 28" />
             <ListingStat className="w-[108px]" label="DOM" value="104" />
-            <div className="flex flex-1 items-center justify-end self-stretch">
-              <MoreTag />
+            <div className="flex flex-1 flex-col items-end justify-end self-stretch">
+              <MoreTag variant="success" />
             </div>
           </div>
         </div>
