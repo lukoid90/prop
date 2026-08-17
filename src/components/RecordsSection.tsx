@@ -6,7 +6,6 @@ const SEGMENTS = ['Listings', 'Tax Records', 'Mortgage'] as const
 type Segment = (typeof SEGMENTS)[number]
 
 const CARD_BORDER = 'var(--border-dimmer)'
-const RUST = '#ae6a5b'
 const TREND_GREEN = 'var(--listing-active)'
 const TREND_RED = '#c2185b'
 
@@ -261,7 +260,7 @@ function ListingDescriptionCard() {
           <p>The Ozark Brokers</p>
           <p>Source: OZMLS</p>
         </div>
-        <p className="w-full text-right text-[15px] leading-[1.26]" style={{ color: RUST }}>
+        <p className="w-full text-right text-[15px] font-bold leading-[1.26]" style={{ color: '#469b70' }}>
           Show more
         </p>
       </div>

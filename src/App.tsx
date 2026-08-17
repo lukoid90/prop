@@ -13,6 +13,7 @@ import { AddContactSheet } from './components/AddContactSheet'
 import { PropertyMenu } from './components/PropertyMenu'
 import { PhotoViewer } from './components/PhotoViewer'
 import { NAV_TABS } from './components/PropertyNav'
+import { CURRENT_OWNER } from './components/OwnersSection'
 import { formatEntryTimestamp } from './lib/formatEntryTimestamp'
 import { downloadRecordsCsv } from './lib/exportRecordsCsv'
 import type { Note, Owner, PriceDropAlertEntry, StatusAlertEntry } from './types'
@@ -35,6 +36,17 @@ function App() {
   const [bathrooms, setBathrooms] = useState('2')
   const [homeSize, setHomeSize] = useState('2,000')
   const [lotSize, setLotSize] = useState('24,500')
+  const [savedSpecs, setSavedSpecs] = useState({ bedrooms: '3', bathrooms: '2', homeSize: '2,000', lotSize: '24,500' })
+
+  const specsDirty =
+    bedrooms !== savedSpecs.bedrooms ||
+    bathrooms !== savedSpecs.bathrooms ||
+    homeSize !== savedSpecs.homeSize ||
+    lotSize !== savedSpecs.lotSize
+
+  const handleSaveChanges = () => {
+    setSavedSpecs({ bedrooms, bathrooms, homeSize, lotSize })
+  }
 
   const handleSaveNote = (message: string) => {
     const date = formatEntryTimestamp(new Date())
@@ -67,13 +79,17 @@ function App() {
   return (
     <div className="flex min-h-svh w-full items-center justify-center p-10">
       <DeviceFrame
-        header={(scrollProgress) => (
+        header={(scrollProgress, contentScrolled) => (
           <Header
             scrollProgress={activeTab === 'Specs' || activeTab === 'Records' || activeTab === 'Owners' ? 1 : scrollProgress}
+            contentScrolled={contentScrolled}
             activeTab={activeTab}
             onTabChange={setActiveTab}
             onOpenMenu={() => setIsMenuOpen(true)}
             onDownload={downloadRecordsCsv}
+            specsDirty={specsDirty}
+            onSaveChanges={handleSaveChanges}
+            onAddPrimaryContact={() => setAddContactOwner(CURRENT_OWNER)}
           />
         )}
         dock={<PropertyDock onShareProperty={() => setIsSharing(true)} />}

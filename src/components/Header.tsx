@@ -3,24 +3,91 @@ import { StatusBar } from './StatusBar'
 import { GlassButton } from './GlassButton'
 import { PropertyNav } from './PropertyNav'
 import { ProgressiveBlur } from './ProgressiveBlur'
+import { ContactsIcon } from './OwnerIcons'
 
 const DARK_HEIGHT = 106
 const LIGHT_HEIGHT = 150
 
+function TrailingButton({
+  activeTab,
+  onDownload,
+  specsDirty,
+  onSaveChanges,
+  onAddPrimaryContact,
+}: {
+  activeTab: string
+  onDownload: () => void
+  specsDirty: boolean
+  onSaveChanges: () => void
+  onAddPrimaryContact: () => void
+}) {
+  if (activeTab === 'Records') {
+    return (
+      <button type="button" onClick={onDownload} className="pointer-events-auto flex h-10 items-center gap-1.5 rounded-full px-3">
+        <DownloadSimple size={16} color="var(--content-primary)" />
+        <span className="text-[15px] font-bold leading-[1.26] tracking-[-0.5px]" style={{ color: 'var(--content-primary)' }}>
+          Download
+        </span>
+      </button>
+    )
+  }
+
+  if (activeTab === 'Specs') {
+    return (
+      <button
+        type="button"
+        onClick={onSaveChanges}
+        disabled={!specsDirty}
+        className="pointer-events-auto flex h-10 items-center justify-center rounded-full px-4"
+        style={specsDirty ? { background: 'var(--button-background-primary,#121212)' } : undefined}
+      >
+        <span
+          className="text-[15px] font-bold leading-[1.26] tracking-[-0.5px]"
+          style={{ color: specsDirty ? 'var(--content-inverse)' : 'var(--content-tertiary)' }}
+        >
+          Save changes
+        </span>
+      </button>
+    )
+  }
+
+  if (activeTab === 'Owners') {
+    return (
+      <button type="button" onClick={onAddPrimaryContact} className="pointer-events-auto flex h-10 items-center gap-1.5 rounded-full px-3">
+        <ContactsIcon size={20} color="var(--content-primary)" />
+        <span className="text-[15px] font-bold leading-[1.26] tracking-[-0.5px]" style={{ color: 'var(--content-primary)' }}>
+          Add to contacts
+        </span>
+      </button>
+    )
+  }
+
+  return null
+}
+
 export function Header({
   scrollProgress,
+  contentScrolled,
   activeTab,
   onTabChange,
   onOpenMenu,
   onDownload,
+  specsDirty,
+  onSaveChanges,
+  onAddPrimaryContact,
 }: {
   scrollProgress: number
+  contentScrolled: boolean
   activeTab: string
   onTabChange: (tab: string) => void
   onOpenMenu: () => void
   onDownload: () => void
+  specsDirty: boolean
+  onSaveChanges: () => void
+  onAddPrimaryContact: () => void
 }) {
   const scrolled = scrollProgress > 0.5
+  const showTitleBarRow = activeTab === 'Specs' || activeTab === 'Records' || activeTab === 'Owners'
 
   return (
     <div className="relative w-full" style={{ height: LIGHT_HEIGHT }}>
@@ -53,31 +120,37 @@ export function Header({
         </div>
       </div>
 
-      {/* Past the hero photo: light frosted bar with back/download and the section tabs pinned in place */}
+      {/* Past the hero photo: light bar with the section tabs pinned in place. The
+          frosted fill only shows once content has actually scrolled underneath it. */}
       <div
         className="absolute inset-x-0 top-0 overflow-hidden rounded-b-[24px] transition-opacity duration-100 ease-out"
         style={{ height: LIGHT_HEIGHT, opacity: scrollProgress, pointerEvents: scrolled ? 'auto' : 'none' }}
       >
-        <ProgressiveBlur startBlur={20} endBlur={10} yStart={0} yEnd={100} />
-        <div
-          className="absolute inset-0"
-          style={{
-            background: 'linear-gradient(to bottom, rgba(253,252,252,0.6), rgba(234,215,210,0.24) 100%)',
-          }}
-        />
+        <div className="absolute inset-0 transition-opacity duration-200 ease-out" style={{ opacity: contentScrolled ? 1 : 0 }}>
+          <ProgressiveBlur startBlur={20} endBlur={10} yStart={0} yEnd={100} />
+          <div
+            className="absolute inset-0"
+            style={{
+              background: 'linear-gradient(to bottom, rgba(253,252,252,0.6), rgba(234,215,210,0.24) 100%)',
+            }}
+          />
+        </div>
         <div className="relative flex flex-col">
           <StatusBar dark />
-          <div className="flex h-11 items-center justify-between px-3">
-            <GlassButton className="pointer-events-auto size-10 shrink-0">
-              <ArrowLeft size={17} color="var(--content-primary)" />
-            </GlassButton>
-            <button type="button" onClick={onDownload} className="pointer-events-auto flex h-10 items-center gap-1.5 rounded-full px-3">
-              <DownloadSimple size={16} color="var(--content-primary)" />
-              <span className="text-[15px] font-bold leading-[1.26] tracking-[-0.5px]" style={{ color: 'var(--content-primary)' }}>
-                Download
-              </span>
-            </button>
-          </div>
+          {showTitleBarRow && (
+            <div className="flex h-11 items-center justify-between px-3">
+              <GlassButton className="pointer-events-auto size-10 shrink-0">
+                <ArrowLeft size={17} color="var(--content-primary)" />
+              </GlassButton>
+              <TrailingButton
+                activeTab={activeTab}
+                onDownload={onDownload}
+                specsDirty={specsDirty}
+                onSaveChanges={onSaveChanges}
+                onAddPrimaryContact={onAddPrimaryContact}
+              />
+            </div>
+          )}
           <PropertyNav active={activeTab} onChange={onTabChange} />
         </div>
       </div>

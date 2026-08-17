@@ -5,7 +5,7 @@ import ownerMichael from '../assets/images/owner-michael.png'
 import ownerAd from '../assets/images/owner-ad.png'
 import type { Owner } from '../types'
 
-const CURRENT_OWNER: Owner = {
+export const CURRENT_OWNER: Owner = {
   id: 'romelu-bayo',
   name: 'Romelu Bayo',
   avatar: ownerRb,
