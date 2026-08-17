@@ -21,6 +21,7 @@ export function PropertyScreen({
   statusAlert,
   onOpenStatusAlert,
   onShareProperty,
+  onAddToBuyerSearch,
 }: {
   notes: Note[]
   onOpenAddNote: () => void
@@ -31,6 +32,7 @@ export function PropertyScreen({
   statusAlert: StatusAlertEntry | null
   onOpenStatusAlert: () => void
   onShareProperty: () => void
+  onAddToBuyerSearch: () => void
 }) {
   if (activeTab === 'Specs') {
     return (
@@ -69,7 +71,7 @@ export function PropertyScreen({
           hasStatusAlert={!!statusAlert}
         />
         <div className="flex flex-col gap-10">
-          <SendToClientSection onShareProperty={onShareProperty} />
+          <SendToClientSection onShareProperty={onShareProperty} onAddToBuyerSearch={onAddToBuyerSearch} />
           <DigDeeperSection />
           <NotesSection notes={notes} onOpenAdd={onOpenAddNote} />
           <ExploreAreaSection />
