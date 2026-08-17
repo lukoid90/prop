@@ -1,5 +1,6 @@
 import { useState, type ReactNode } from 'react'
 import { TrendUp, TrendDown } from '@phosphor-icons/react'
+import { LISTING_PATTERN_STYLE } from '../lib/listingPattern'
 
 const SEGMENTS = ['Listings', 'Tax Records', 'Mortgage'] as const
 type Segment = (typeof SEGMENTS)[number]
@@ -217,11 +218,9 @@ function MortgageEventCard({
 
 function ListingDescriptionCard() {
   return (
-    <div
-      className="flex w-full flex-col gap-4 rounded-2xl border p-3"
-      style={{ borderColor: CARD_BORDER, background: 'var(--surface-lighter)' }}
-    >
-      <div className="flex w-full flex-col gap-0.5">
+    <div className="relative flex w-full flex-col gap-4 overflow-hidden rounded-2xl p-3" style={{ background: 'var(--surface-lighter)' }}>
+      <div className="pointer-events-none absolute inset-0 opacity-12" style={LISTING_PATTERN_STYLE} />
+      <div className="relative flex w-full flex-col gap-0.5">
         <div
           className="flex h-6 w-fit items-center justify-center rounded-full px-2 py-1"
           style={{ background: 'var(--listing-active)' }}

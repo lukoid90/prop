@@ -1,5 +1,6 @@
-import { House, Buildings, SwimmingPool, HouseLine, Tree, Barbell } from '@phosphor-icons/react'
+import { House, Buildings, SwimmingPool, HouseLine, Tree, Barbell, Phone, Mailbox } from '@phosphor-icons/react'
 import { Tag, MoreTag } from './Tag'
+import { LISTING_PATTERN_STYLE } from '../lib/listingPattern'
 
 function Stat({ value, unit, label }: { value: string; unit?: string; label: string }) {
   return (
@@ -46,26 +47,37 @@ export function SubjectDetails() {
       </div>
 
       <div
-        className="flex w-full items-center justify-center rounded-2xl border-[0.5px] p-3"
+        className="flex h-[91px] w-full items-center justify-center rounded-2xl border-[0.5px] p-3"
         style={{ background: '#f5f0ee', borderColor: '#ead7d2' }}
       >
         <div className="flex min-w-0 flex-1 flex-col items-start">
           <p className="text-[14px] leading-[1.48] tracking-[0.25px] text-[var(--content-tertiary)]">Owner</p>
-          <p className="text-[16px] leading-[1.48] tracking-[0px] text-[var(--content-primary)]">Romelu Bayo</p>
+          <div className="flex flex-col items-start gap-[3px]">
+            <p className="text-[16px] leading-[1.48] tracking-[0px] text-[var(--content-primary)]">Romelu Bayo</p>
+            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1">
+                <Phone size={18} color="var(--content-secondary)" />
+                <span className="whitespace-nowrap text-[14px] leading-[1.48] tracking-[0.25px] text-[var(--content-secondary)]">
+                  (505) 872 ••••
+                </span>
+              </div>
+              <div className="flex items-center gap-1">
+                <Mailbox size={18} color="var(--content-secondary)" />
+                <span className="whitespace-nowrap text-[14px] leading-[1.48] tracking-[0.25px] text-[var(--content-secondary)]">
+                  •••• MO 38002
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
         <MoreTag />
       </div>
 
       <div className="flex w-full flex-col items-start gap-6">
         <p className="text-[20px] font-bold leading-[1.26] text-[var(--content-primary)]">Listing</p>
-        <div
-          className="flex w-full flex-col items-center gap-1 rounded-2xl py-3"
-          style={{
-            backgroundImage:
-              'linear-gradient(90deg, rgba(253,252,252,0.6) 0%, rgba(253,252,252,0.6) 100%), linear-gradient(90deg, rgba(253,252,252,0.6) 0%, rgba(253,252,252,0.6) 100%), linear-gradient(90deg, rgb(13,87,57) 0%, rgb(13,87,57) 100%)',
-          }}
-        >
-          <div className="flex w-full items-center gap-2 px-4 pt-1 text-[var(--content-primary)]">
+        <div className="relative flex w-full flex-col items-center gap-1 overflow-hidden rounded-2xl py-3" style={{ background: 'var(--surface-lighter)' }}>
+          <div className="pointer-events-none absolute inset-0 opacity-12" style={LISTING_PATTERN_STYLE} />
+          <div className="relative flex w-full items-center gap-2 px-4 pt-1 text-[var(--content-primary)]">
             <ListingStat className="w-[108px]" label="Listed for" value="$1,000,000" />
             <ListingStat className="w-[108px]" label="Per /ft² Home" value="$879" />
             <ListingStat className="w-[102px]" label="Per/ac Lot" value="$431" />
