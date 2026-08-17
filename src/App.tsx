@@ -14,6 +14,7 @@ import { PropertyMenu } from './components/PropertyMenu'
 import { PhotoViewer } from './components/PhotoViewer'
 import { NAV_TABS } from './components/PropertyNav'
 import { formatEntryTimestamp } from './lib/formatEntryTimestamp'
+import { downloadRecordsCsv } from './lib/exportRecordsCsv'
 import type { Note, Owner, PriceDropAlertEntry, StatusAlertEntry } from './types'
 
 function App() {
@@ -72,6 +73,7 @@ function App() {
             activeTab={activeTab}
             onTabChange={setActiveTab}
             onOpenMenu={() => setIsMenuOpen(true)}
+            onDownload={downloadRecordsCsv}
           />
         )}
         dock={<PropertyDock onShareProperty={() => setIsSharing(true)} />}

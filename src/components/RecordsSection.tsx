@@ -273,33 +273,34 @@ function ListingDescriptionCard() {
 // current $1,000,000 listing. The Jan 2023 purchase (bought $820k, briefly
 // relisted at $820k, then sold at $850k) and 2026 remodel (see Specs >
 // Condition: Remodel) match the Mortgage tab below.
+export const LISTING_EVENTS = [
+  { year: '2026', date: 'May 28', trend: '+4.2%', eventLabel: 'Listed for sale', price: '$1,000,000', perSqFt: '$500', source: 'OZMLS' },
+  { year: '2026', date: 'Feb 3', trend: '+12.9%', eventLabel: 'Price change', price: '$960,000', perSqFt: '$480', source: 'OZMLS' },
+  { year: '2023', date: 'Apr 2', trend: '+0.2%', eventLabel: 'Sold', price: '$850,000', perSqFt: '$425', source: 'Public Record' },
+  { year: '2023', date: 'Jan 15', trend: '', eventLabel: 'Listed for sale', price: '$820,000', perSqFt: '$410', source: 'OZMLS' },
+  { year: '2023', date: 'Jan 1', trend: '', eventLabel: 'Sold', price: '$820,000', perSqFt: '$410', source: 'Public Record' },
+] as const
+
 function ListingsTab() {
+  const years = [...new Set(LISTING_EVENTS.map((e) => e.year))]
   return (
     <div className="flex w-full flex-col items-start gap-6 pt-6">
       <ListingDescriptionCard />
-      <YearGroup year="2026">
-        <ListingEventCard
-          date="May 28"
-          trend={{ dir: 'up', percent: '+4.2%' }}
-          eventLabel="Listed for sale"
-          price="$1,000,000"
-          perSqFt="$500"
-          source="OZMLS"
-        />
-        <ListingEventCard
-          date="Feb 3"
-          trend={{ dir: 'up', percent: '+12.9%' }}
-          eventLabel="Price change"
-          price="$960,000"
-          perSqFt="$480"
-          source="OZMLS"
-        />
-      </YearGroup>
-      <YearGroup year="2023">
-        <ListingEventCard date="Apr 2" trend={{ dir: 'up', percent: '+0.2%' }} eventLabel="Sold" price="$850,000" perSqFt="$425" source="Public Record" />
-        <ListingEventCard date="Jan 15" eventLabel="Listed for sale" price="$820,000" perSqFt="$410" source="OZMLS" />
-        <ListingEventCard date="Jan 1" eventLabel="Sold" price="$820,000" perSqFt="$410" source="Public Record" />
-      </YearGroup>
+      {years.map((year) => (
+        <YearGroup key={year} year={year}>
+          {LISTING_EVENTS.filter((e) => e.year === year).map((e) => (
+            <ListingEventCard
+              key={e.date}
+              date={e.date}
+              trend={e.trend ? { dir: 'up', percent: e.trend } : undefined}
+              eventLabel={e.eventLabel}
+              price={e.price}
+              perSqFt={e.perSqFt}
+              source={e.source}
+            />
+          ))}
+        </YearGroup>
+      ))}
     </div>
   )
 }
@@ -309,39 +310,42 @@ function ListingsTab() {
 // value appreciates slowly (~1.5%/yr); additions jump more in 2025 as the
 // remodel from the Mortgage tab's equity loan gets reflected in the record.
 // The earliest year shown has no prior-year baseline, so it omits trends.
+export const TAX_YEARS = [
+  {
+    year: '2025',
+    propertyTax: '$9,800',
+    propertyTaxTrend: '+3.2%',
+    land: '$564,000',
+    additions: '$326,000',
+    assessedValue: '$890,000',
+    assessedValueTrend: '+3.5%',
+  },
+  {
+    year: '2024',
+    propertyTax: '$9,500',
+    propertyTaxTrend: '+3.3%',
+    land: '$556,000',
+    additions: '$304,000',
+    assessedValue: '$860,000',
+    assessedValueTrend: '+2.4%',
+  },
+  {
+    year: '2023',
+    propertyTax: '$9,200',
+    propertyTaxTrend: '',
+    land: '$548,000',
+    additions: '$292,000',
+    assessedValue: '$840,000',
+    assessedValueTrend: '',
+  },
+] as const
+
 function TaxRecordsTab() {
-  const years = [
-    {
-      year: '2025',
-      propertyTax: '$9,800',
-      propertyTaxTrend: '+3.2%',
-      land: '$564,000',
-      additions: '$326,000',
-      assessedValue: '$890,000',
-      assessedValueTrend: '+3.5%',
-    },
-    {
-      year: '2024',
-      propertyTax: '$9,500',
-      propertyTaxTrend: '+3.3%',
-      land: '$556,000',
-      additions: '$304,000',
-      assessedValue: '$860,000',
-      assessedValueTrend: '+2.4%',
-    },
-    {
-      year: '2023',
-      propertyTax: '$9,200',
-      land: '$548,000',
-      additions: '$292,000',
-      assessedValue: '$840,000',
-    },
-  ]
   return (
     <div className="flex w-full flex-col items-start gap-5 pt-6">
-      {years.map(({ year, ...card }) => (
+      {TAX_YEARS.map(({ year, propertyTaxTrend, assessedValueTrend, ...card }) => (
         <YearGroup key={year} year={year}>
-          <TaxYearCard {...card} />
+          <TaxYearCard {...card} propertyTaxTrend={propertyTaxTrend || undefined} assessedValueTrend={assessedValueTrend || undefined} />
         </YearGroup>
       ))}
     </div>
@@ -352,33 +356,39 @@ function TaxRecordsTab() {
 // plus a 2025 home-equity loan (shorter term, typically-higher HELOC rate,
 // 2nd lien position behind the 2023 mortgage) that funded the remodel
 // reflected in the 2026 listing price above.
+export const MORTGAGE_EVENTS = [
+  {
+    year: '2025',
+    date: 'Nov 23',
+    type: 'Equity loan',
+    loanAmount: '$160,000',
+    term: '15 yr',
+    lender: 'Bank of America',
+    rate: '8.0%',
+    rateType: 'Fixed Rate',
+    lien: '2nd lien',
+  },
+  {
+    year: '2023',
+    date: 'Apr 2',
+    type: 'Mortgage',
+    loanAmount: '$680,000',
+    term: '30 yr',
+    lender: 'Bank of America',
+    rate: '6.5%',
+    rateType: 'Fixed Rate',
+    lien: '1st lien',
+  },
+] as const
+
 function MortgageTab() {
   return (
     <div className="flex w-full flex-col items-start gap-5 pt-6">
-      <YearGroup year="2025">
-        <MortgageEventCard
-          date="Nov 23"
-          type="Equity loan"
-          loanAmount="$160,000"
-          term="15 yr"
-          lender="Bank of America"
-          rate="8.0%"
-          rateType="Fixed Rate"
-          lien="2nd lien"
-        />
-      </YearGroup>
-      <YearGroup year="2023">
-        <MortgageEventCard
-          date="Apr 2"
-          type="Mortgage"
-          loanAmount="$680,000"
-          term="30 yr"
-          lender="Bank of America"
-          rate="6.5%"
-          rateType="Fixed Rate"
-          lien="1st lien"
-        />
-      </YearGroup>
+      {MORTGAGE_EVENTS.map(({ year, ...card }) => (
+        <YearGroup key={year} year={year}>
+          <MortgageEventCard {...card} />
+        </YearGroup>
+      ))}
     </div>
   )
 }
