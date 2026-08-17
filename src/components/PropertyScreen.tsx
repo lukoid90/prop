@@ -60,7 +60,7 @@ export function PropertyScreen({
   if (activeTab === 'Specs') {
     return (
       <div className="flex flex-col pb-[120px]">
-        <div style={{ height: 170 }} aria-hidden />
+        <div style={{ height: 178 }} aria-hidden />
         <SpecsSection
           bedrooms={bedrooms}
           onChangeBedrooms={onChangeBedrooms}
@@ -78,7 +78,7 @@ export function PropertyScreen({
   if (activeTab === 'Records') {
     return (
       <div className="flex flex-col pb-[120px]">
-        <div style={{ height: 170 }} aria-hidden />
+        <div style={{ height: 178 }} aria-hidden />
         <RecordsSection />
       </div>
     )
@@ -87,7 +87,7 @@ export function PropertyScreen({
   if (activeTab === 'Owners') {
     return (
       <div className="flex flex-col pb-[120px]">
-        <div style={{ height: 170 }} aria-hidden />
+        <div style={{ height: 178 }} aria-hidden />
         <OwnersSection onAddContact={onAddContact} />
       </div>
     )

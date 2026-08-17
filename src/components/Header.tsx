@@ -6,7 +6,7 @@ import { ProgressiveBlur } from './ProgressiveBlur'
 import { ContactsIcon } from './OwnerIcons'
 
 const DARK_HEIGHT = 106
-const LIGHT_HEIGHT = 150
+const LIGHT_HEIGHT = 158
 
 function TrailingButton({
   activeTab,
@@ -138,7 +138,7 @@ export function Header({
         <div className="relative flex flex-col">
           <StatusBar dark />
           {showTitleBarRow && (
-            <div className="flex h-11 items-center justify-between px-3">
+            <div className="flex items-center justify-between px-3 pb-2 pt-3">
               <GlassButton className="pointer-events-auto size-10 shrink-0">
                 <ArrowLeft size={17} color="var(--content-primary)" />
               </GlassButton>
