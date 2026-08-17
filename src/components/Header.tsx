@@ -51,12 +51,11 @@ export function Header({
         className="absolute inset-x-0 top-0 overflow-hidden rounded-b-[24px] transition-opacity duration-100 ease-out"
         style={{ height: 106, opacity: scrollProgress, pointerEvents: scrolled ? 'auto' : 'none' }}
       >
+        <ProgressiveBlur startBlur={20} endBlur={10} yStart={0} yEnd={100} />
         <div
           className="absolute inset-0"
           style={{
-            background: 'linear-gradient(to bottom, rgba(253,252,252,0.6), rgba(234,215,210,0.24) 79%)',
-            backdropFilter: 'blur(5px)',
-            WebkitBackdropFilter: 'blur(5px)',
+            background: 'linear-gradient(to bottom, rgba(253,252,252,0.6), rgba(234,215,210,0.24) 100%)',
           }}
         />
         <div className="relative flex flex-col">
