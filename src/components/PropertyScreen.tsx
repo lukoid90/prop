@@ -97,7 +97,15 @@ export function PropertyScreen({
     <div className="flex flex-col gap-6 pb-[120px]">
       <PropertyPhoto onOpen={onOpenPhotos} />
       <PropertyNav active={activeTab} onChange={onTabChange} />
-      <SubjectDetails bedrooms={bedrooms} bathrooms={bathrooms} homeSize={homeSize} lotSize={lotSize} />
+      <SubjectDetails
+        bedrooms={bedrooms}
+        bathrooms={bathrooms}
+        homeSize={homeSize}
+        lotSize={lotSize}
+        onOpenOwners={() => onTabChange('Owners')}
+        onOpenListing={() => onTabChange('Records')}
+        onOpenSpecs={() => onTabChange('Specs')}
+      />
       <div className="flex flex-col gap-8">
         <ActiveSection
           priceDropAlert={priceDropAlert}
@@ -105,12 +113,14 @@ export function PropertyScreen({
           onEditPriceDropAlert={onOpenPriceDropAlert}
           onEditStatusAlert={onOpenStatusAlert}
         />
-        <AlertsSection
-          onOpenPriceDropAlert={onOpenPriceDropAlert}
-          onOpenStatusAlert={onOpenStatusAlert}
-          hasPriceDropAlert={!!priceDropAlert}
-          hasStatusAlert={!!statusAlert}
-        />
+        <div id="alerts-section">
+          <AlertsSection
+            onOpenPriceDropAlert={onOpenPriceDropAlert}
+            onOpenStatusAlert={onOpenStatusAlert}
+            hasPriceDropAlert={!!priceDropAlert}
+            hasStatusAlert={!!statusAlert}
+          />
+        </div>
         <div className="flex flex-col gap-10">
           <SendToClientSection onShareProperty={onShareProperty} onAddToBuyerSearch={onAddToBuyerSearch} />
           <DigDeeperSection />

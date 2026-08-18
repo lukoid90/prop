@@ -27,11 +27,17 @@ export function SubjectDetails({
   bathrooms,
   homeSize,
   lotSize,
+  onOpenOwners,
+  onOpenListing,
+  onOpenSpecs,
 }: {
   bedrooms: string
   bathrooms: string
   homeSize: string
   lotSize: string
+  onOpenOwners: () => void
+  onOpenListing: () => void
+  onOpenSpecs: () => void
 }) {
   const lotSizeAcres = lotSize ? sqFtToAcres(lotSize) : '0'
   const homeSizeNum = Number(homeSize.replace(/,/g, '')) || 0
@@ -59,19 +65,21 @@ export function SubjectDetails({
           </div>
         </div>
         <div className="flex flex-wrap items-start gap-1.5">
-          <Tag icon={<House size={12} />} label="Single family" />
-          <Tag icon={<Buildings size={12} />} label="Contemporary" />
-          <Tag icon={<SwimmingPool size={12} />} label="Pool" />
-          <Tag icon={<HouseLine size={12} />} label="ADU" />
-          <Tag icon={<Buildings size={12} weight="bold" />} label="City View" />
-          <Tag icon={<Tree size={12} />} label="Landscaped Garden" />
-          <Tag icon={<Barbell size={12} />} label="Gym" />
-          <MoreTag />
+          <Tag icon={<House size={12} />} label="Single family" onClick={onOpenSpecs} />
+          <Tag icon={<Buildings size={12} />} label="Contemporary" onClick={onOpenSpecs} />
+          <Tag icon={<SwimmingPool size={12} />} label="Pool" onClick={onOpenSpecs} />
+          <Tag icon={<HouseLine size={12} />} label="ADU" onClick={onOpenSpecs} />
+          <Tag icon={<Buildings size={12} weight="bold" />} label="City View" onClick={onOpenSpecs} />
+          <Tag icon={<Tree size={12} />} label="Landscaped Garden" onClick={onOpenSpecs} />
+          <Tag icon={<Barbell size={12} />} label="Gym" onClick={onOpenSpecs} />
+          <MoreTag onClick={onOpenSpecs} />
         </div>
       </div>
 
-      <div
-        className="flex h-[91px] w-full items-center justify-center rounded-2xl border-[0.5px] p-3"
+      <button
+        type="button"
+        onClick={onOpenOwners}
+        className="flex h-[91px] w-full items-center justify-center rounded-2xl border-[0.5px] p-3 text-left"
         style={{ background: '#f5f0ee', borderColor: '#ead7d2' }}
       >
         <div className="flex min-w-0 flex-1 flex-col items-start">
@@ -85,11 +93,16 @@ export function SubjectDetails({
           </div>
         </div>
         <MoreTag />
-      </div>
+      </button>
 
       <div className="flex w-full flex-col items-start gap-6">
         <p className="text-[20px] font-bold leading-[1.26] text-[var(--content-primary)]">Listing</p>
-        <div className="relative flex w-full flex-col items-center gap-1 overflow-hidden rounded-2xl py-3" style={{ background: 'var(--surface-lighter)' }}>
+        <button
+          type="button"
+          onClick={onOpenListing}
+          className="relative flex w-full flex-col items-center gap-1 overflow-hidden rounded-2xl py-3 text-left"
+          style={{ background: 'var(--surface-lighter)' }}
+        >
           <div className="pointer-events-none absolute inset-0 opacity-12" style={LISTING_PATTERN_STYLE} />
           <div className="relative flex w-full items-center gap-2 px-4 pt-1 text-[var(--content-primary)]">
             <ListingStat className="w-[108px]" label="Listed for" value={formatUSD(LISTING_PRICE)} />
@@ -103,7 +116,7 @@ export function SubjectDetails({
               <MoreTag variant="success" />
             </div>
           </div>
-        </div>
+        </button>
       </div>
     </div>
   )

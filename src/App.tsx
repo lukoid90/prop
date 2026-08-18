@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { DeviceFrame } from './components/DeviceFrame'
 import { Header } from './components/Header'
 import { PropertyDock } from './components/PropertyDock'
@@ -37,6 +37,19 @@ function App() {
   const [homeSize, setHomeSize] = useState('2,000')
   const [lotSize, setLotSize] = useState('24,500')
   const [savedSpecs, setSavedSpecs] = useState({ bedrooms: '3', bathrooms: '2', homeSize: '2,000', lotSize: '24,500' })
+  const [scrollToAlerts, setScrollToAlerts] = useState(false)
+
+  useEffect(() => {
+    if (activeTab === 'Summary' && scrollToAlerts) {
+      document.getElementById('alerts-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      setScrollToAlerts(false)
+    }
+  }, [activeTab, scrollToAlerts])
+
+  const handleSetAlert = () => {
+    setActiveTab('Summary')
+    setScrollToAlerts(true)
+  }
 
   const specsDirty =
     bedrooms !== savedSpecs.bedrooms ||
@@ -92,7 +105,7 @@ function App() {
             onAddPrimaryContact={() => setAddContactOwner(CURRENT_OWNER)}
           />
         )}
-        dock={<PropertyDock onShareProperty={() => setIsSharing(true)} />}
+        dock={<PropertyDock onShareProperty={() => setIsSharing(true)} onSetAlert={handleSetAlert} />}
         overlay={
           <>
             <NoteSheet open={isAddingNote} onClose={() => setIsAddingNote(false)} onSave={handleSaveNote} />

@@ -1,10 +1,10 @@
 import { GlassButton } from './GlassButton'
 
-export function PropertyDock({ onShareProperty }: { onShareProperty: () => void }) {
+export function PropertyDock({ onShareProperty, onSetAlert }: { onShareProperty: () => void; onSetAlert: () => void }) {
   return (
     <div className="pointer-events-none relative h-[74px] w-full">
       <div className="pointer-events-auto absolute inset-x-0 top-0 flex items-center justify-center gap-3">
-        <GlassButton variant="dark" className="h-10 w-[132px] px-4">
+        <GlassButton variant="dark" onClick={onSetAlert} className="h-10 w-[132px] px-4">
           <span className="text-[15px] font-bold leading-[1.26] tracking-[-0.5px] text-[var(--content-inverse)]">
             Set an alert
           </span>
