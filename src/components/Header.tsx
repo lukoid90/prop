@@ -3,7 +3,6 @@ import { StatusBar } from './StatusBar'
 import { GlassButton } from './GlassButton'
 import { PropertyNav } from './PropertyNav'
 import { ProgressiveBlur } from './ProgressiveBlur'
-import { ContactsIcon } from './OwnerIcons'
 
 const DARK_HEIGHT = 106
 const LIGHT_HEIGHT = 158
@@ -13,13 +12,11 @@ function TrailingButton({
   onDownload,
   specsDirty,
   onSaveChanges,
-  onAddPrimaryContact,
 }: {
   activeTab: string
   onDownload: () => void
   specsDirty: boolean
   onSaveChanges: () => void
-  onAddPrimaryContact: () => void
 }) {
   if (activeTab === 'Records') {
     return (
@@ -51,17 +48,6 @@ function TrailingButton({
     )
   }
 
-  if (activeTab === 'Owners') {
-    return (
-      <button type="button" onClick={onAddPrimaryContact} className="pointer-events-auto flex h-10 items-center gap-1.5 rounded-full px-3">
-        <ContactsIcon size={20} color="var(--content-primary)" />
-        <span className="text-[15px] font-bold leading-[1.26] tracking-[-0.5px]" style={{ color: 'var(--content-primary)' }}>
-          Add to contacts
-        </span>
-      </button>
-    )
-  }
-
   return null
 }
 
@@ -74,7 +60,6 @@ export function Header({
   onDownload,
   specsDirty,
   onSaveChanges,
-  onAddPrimaryContact,
 }: {
   scrollProgress: number
   contentScrolled: boolean
@@ -84,7 +69,6 @@ export function Header({
   onDownload: () => void
   specsDirty: boolean
   onSaveChanges: () => void
-  onAddPrimaryContact: () => void
 }) {
   const scrolled = scrollProgress > 0.5
   const showTitleBarRow = activeTab === 'Specs' || activeTab === 'Records' || activeTab === 'Owners'
@@ -147,7 +131,6 @@ export function Header({
                 onDownload={onDownload}
                 specsDirty={specsDirty}
                 onSaveChanges={onSaveChanges}
-                onAddPrimaryContact={onAddPrimaryContact}
               />
             </div>
           )}

@@ -1,4 +1,4 @@
-import { AddContactIcon } from './OwnerIcons'
+import { ContactsIcon } from './OwnerIcons'
 import ownerRb from '../assets/images/owner-rb.png'
 import ownerBecky from '../assets/images/owner-becky.png'
 import ownerMichael from '../assets/images/owner-michael.png'
@@ -55,7 +55,7 @@ function OwnerCard({ owner, onAddContact }: { owner: Owner; onAddContact: () => 
           <p className="text-[14px] leading-[1.48] tracking-[0.25px] text-[var(--content-tertiary)]">Add to contacts</p>
         </div>
       </div>
-      <AddContactIcon size={24} />
+      <ContactsIcon size={24} />
     </button>
   )
 }

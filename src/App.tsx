@@ -13,7 +13,6 @@ import { AddContactSheet } from './components/AddContactSheet'
 import { PropertyMenu } from './components/PropertyMenu'
 import { PhotoViewer } from './components/PhotoViewer'
 import { NAV_TABS } from './components/PropertyNav'
-import { CURRENT_OWNER } from './components/OwnersSection'
 import { formatEntryTimestamp } from './lib/formatEntryTimestamp'
 import { downloadRecordsCsv } from './lib/exportRecordsCsv'
 import type { Note, Owner, PriceDropAlertEntry, StatusAlertEntry } from './types'
@@ -38,6 +37,7 @@ function App() {
   const [lotSize, setLotSize] = useState('24,500')
   const [savedSpecs, setSavedSpecs] = useState({ bedrooms: '3', bathrooms: '2', homeSize: '2,000', lotSize: '24,500' })
   const [scrollToAlerts, setScrollToAlerts] = useState(false)
+  const [heroScrollProgress, setHeroScrollProgress] = useState(0)
 
   useEffect(() => {
     if (activeTab === 'Summary' && scrollToAlerts) {
@@ -102,9 +102,9 @@ function App() {
             onDownload={downloadRecordsCsv}
             specsDirty={specsDirty}
             onSaveChanges={handleSaveChanges}
-            onAddPrimaryContact={() => setAddContactOwner(CURRENT_OWNER)}
           />
         )}
+        onScrollProgressChange={setHeroScrollProgress}
         dock={<PropertyDock onShareProperty={() => setIsSharing(true)} onSetAlert={handleSetAlert} />}
         overlay={
           <>
@@ -135,6 +135,7 @@ function App() {
         <PropertyScreen
           notes={notes}
           onOpenAddNote={() => setIsAddingNote(true)}
+          heroScrollProgress={heroScrollProgress}
           activeTab={activeTab}
           onTabChange={setActiveTab}
           priceDropAlert={priceDropAlert}

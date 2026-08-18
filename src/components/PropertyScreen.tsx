@@ -15,6 +15,7 @@ import type { Note, Owner, PriceDropAlertEntry, StatusAlertEntry } from '../type
 export function PropertyScreen({
   notes,
   onOpenAddNote,
+  heroScrollProgress,
   activeTab,
   onTabChange,
   priceDropAlert,
@@ -37,6 +38,7 @@ export function PropertyScreen({
 }: {
   notes: Note[]
   onOpenAddNote: () => void
+  heroScrollProgress: number
   activeTab: string
   onTabChange: (tab: string) => void
   priceDropAlert: PriceDropAlertEntry | null
@@ -96,7 +98,9 @@ export function PropertyScreen({
   return (
     <div className="flex flex-col gap-6 pb-[120px]">
       <PropertyPhoto onOpen={onOpenPhotos} />
-      <PropertyNav active={activeTab} onChange={onTabChange} />
+      <div className="transition-opacity duration-100 ease-out" style={{ opacity: 1 - heroScrollProgress }}>
+        <PropertyNav active={activeTab} onChange={onTabChange} />
+      </div>
       <SubjectDetails
         bedrooms={bedrooms}
         bathrooms={bathrooms}

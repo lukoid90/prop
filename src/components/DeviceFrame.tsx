@@ -38,11 +38,13 @@ export function DeviceFrame({
   dock,
   overlay,
   children,
+  onScrollProgressChange,
 }: {
   header: (scrollProgress: number, contentScrolled: boolean) => ReactNode
   dock: ReactNode
   overlay?: ReactNode
   children: ReactNode
+  onScrollProgressChange?: (scrollProgress: number) => void
 }) {
   const [scrollProgress, setScrollProgress] = useState(0)
   const [contentScrolled, setContentScrolled] = useState(false)
@@ -52,6 +54,7 @@ export function DeviceFrame({
     const t = Math.min(1, Math.max(0, (y - FADE_START) / (FADE_END - FADE_START)))
     setScrollProgress(t)
     setContentScrolled(y > CONTENT_SCROLLED_THRESHOLD)
+    onScrollProgressChange?.(t)
   }
 
   return (
