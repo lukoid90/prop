@@ -289,7 +289,19 @@ function AiNotepad() {
   )
 }
 
-function FeaturePill({ label, avatar, icon, ai }: { label: string; avatar?: string; icon?: string; ai?: boolean }) {
+function FeaturePill({
+  label,
+  avatar,
+  icon,
+  ai,
+  onRemove,
+}: {
+  label: string
+  avatar?: string
+  icon?: string
+  ai?: boolean
+  onRemove?: () => void
+}) {
   return (
     <div
       className="flex min-w-12 shrink-0 items-center justify-center gap-2 rounded-full py-2 pl-2 pr-3"
@@ -311,13 +323,18 @@ function FeaturePill({ label, avatar, icon, ai }: { label: string; avatar?: stri
           className="size-8 shrink-0 rounded-full object-cover"
           style={{ boxShadow: `0 0 0 0.8px ${ai ? AI_BORDER : '#f1e7e4'}` }}
         />
-      ) : (
+      ) : icon ? (
         <div
           className="flex size-8 shrink-0 items-center justify-center rounded-full"
           style={{ background: 'var(--border-default)', borderWidth: 0.8, borderStyle: 'solid', borderColor: '#f1e7e4' }}
         >
           <img src={icon} alt="" className="size-4" />
         </div>
+      ) : (
+        <div
+          className="size-8 shrink-0 rounded-full"
+          style={{ background: 'var(--brand-primary-150,#f5f0ee)', borderWidth: 0.8, borderStyle: 'solid', borderColor: '#f1e7e4' }}
+        />
       )}
       <p
         className={`whitespace-nowrap text-[15px] leading-[1.26] ${ai ? 'italic' : ''}`}
@@ -325,12 +342,20 @@ function FeaturePill({ label, avatar, icon, ai }: { label: string; avatar?: stri
       >
         {label}
       </p>
-      {ai ? <img src={iconAiDetected} alt="" className="size-4 shrink-0" /> : <img src={iconAfters} alt="" className="h-3 w-4 shrink-0" />}
+      {ai ? (
+        <img src={iconAiDetected} alt="" className="size-4 shrink-0" />
+      ) : (
+        <button type="button" onClick={onRemove} aria-label={`Remove ${label}`} className="flex h-3 w-4 shrink-0 items-center justify-center">
+          <img src={iconAfters} alt="" className="h-3 w-4" />
+        </button>
+      )}
     </div>
   )
 }
 
-const FEATURES: { label: string; avatar?: string; icon?: string; ai?: boolean }[] = [
+type Feature = { label: string; avatar?: string; icon?: string; ai?: boolean }
+
+const INITIAL_FEATURES: Feature[] = [
   { label: 'Cinema room', avatar: featureCinemaRoom, ai: true },
   { label: 'Clawfoot tub', avatar: featureClawfootTub, ai: true },
   { label: 'Air con', icon: iconAirCon },
@@ -340,7 +365,46 @@ const FEATURES: { label: string; avatar?: string; icon?: string; ai?: boolean }[
   { label: 'Security', icon: iconSecurity },
 ]
 
+function AddFeatureInput({ onAdd }: { onAdd: (label: string) => void }) {
+  const [value, setValue] = useState('')
+
+  const submit = () => {
+    const label = value.trim()
+    if (!label) return
+    onAdd(label)
+    setValue('')
+  }
+
+  return (
+    <div
+      className="flex w-full items-center gap-2 rounded-full py-2 pl-2 pr-3"
+      style={{ borderWidth: 0.5, borderStyle: 'solid', borderColor: 'var(--border-resting)' }}
+    >
+      <div className="size-8 shrink-0 rounded-full" style={{ background: 'var(--brand-primary-150,#f5f0ee)', borderWidth: 0.8, borderStyle: 'solid', borderColor: '#f1e7e4' }} />
+      <input
+        autoFocus
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') submit()
+        }}
+        placeholder="Feature or amenity"
+        className="min-w-0 flex-1 border-0 bg-transparent p-0 text-[15px] leading-[1.26] outline-none"
+        style={{ color: 'var(--content-primary)', caretColor: AI_BORDER }}
+      />
+      {value && (
+        <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => setValue('')} className="flex size-4 shrink-0 items-center justify-center">
+          <XCircle size={16} color="var(--content-tertiary)" />
+        </button>
+      )}
+    </div>
+  )
+}
+
 function FeaturesAmenities() {
+  const [features, setFeatures] = useState(INITIAL_FEATURES)
+  const [isAdding, setIsAdding] = useState(false)
+
   return (
     <div className="flex w-full flex-col items-start gap-4">
       <div className="flex h-11 w-full items-center gap-2">
@@ -349,18 +413,22 @@ function FeaturesAmenities() {
         </p>
         <button
           type="button"
+          onClick={() => setIsAdding((v) => !v)}
           className="flex h-9 shrink-0 items-center justify-center gap-1 rounded-full border px-3"
           style={{ borderColor: 'var(--content-primary)' }}
         >
-          <Plus size={14} color="var(--content-primary)" />
+          {!isAdding && <Plus size={14} color="var(--content-primary)" />}
           <span className="text-[15px] leading-[1.26]" style={{ color: 'var(--content-primary)' }}>
-            Add
+            {isAdding ? 'Done' : 'Add'}
           </span>
         </button>
       </div>
       <div className="flex w-full flex-wrap items-start gap-2">
-        {FEATURES.map((f) => (
-          <FeaturePill key={f.label} {...f} />
+        {isAdding && (
+          <AddFeatureInput onAdd={(label) => setFeatures((prev) => [...prev, { label }])} />
+        )}
+        {features.map((f, i) => (
+          <FeaturePill key={`${f.label}-${i}`} {...f} onRemove={() => setFeatures((prev) => prev.filter((_, j) => j !== i))} />
         ))}
       </div>
     </div>
