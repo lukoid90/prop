@@ -1,4 +1,4 @@
-import { ArrowLeft, DotsThree, DownloadSimple } from '@phosphor-icons/react'
+import { ArrowLeft, DotsThree } from '@phosphor-icons/react'
 import { StatusBar } from './StatusBar'
 import { GlassButton } from './GlassButton'
 import { PropertyNav } from './PropertyNav'
@@ -9,26 +9,13 @@ const LIGHT_HEIGHT = 158
 
 function TrailingButton({
   activeTab,
-  onDownload,
   specsDirty,
   onSaveChanges,
 }: {
   activeTab: string
-  onDownload: () => void
   specsDirty: boolean
   onSaveChanges: () => void
 }) {
-  if (activeTab === 'Records') {
-    return (
-      <button type="button" onClick={onDownload} className="pointer-events-auto flex h-10 items-center gap-1.5 rounded-full px-3">
-        <DownloadSimple size={16} color="var(--content-primary)" />
-        <span className="text-[15px] font-bold leading-[1.26] tracking-[-0.5px]" style={{ color: 'var(--content-primary)' }}>
-          Download
-        </span>
-      </button>
-    )
-  }
-
   if (activeTab === 'Specs') {
     return (
       <button
@@ -57,7 +44,6 @@ export function Header({
   activeTab,
   onTabChange,
   onOpenMenu,
-  onDownload,
   specsDirty,
   onSaveChanges,
 }: {
@@ -66,7 +52,6 @@ export function Header({
   activeTab: string
   onTabChange: (tab: string) => void
   onOpenMenu: () => void
-  onDownload: () => void
   specsDirty: boolean
   onSaveChanges: () => void
 }) {
@@ -126,12 +111,7 @@ export function Header({
               <GlassButton className="pointer-events-auto size-10 shrink-0">
                 <ArrowLeft size={17} color="var(--content-primary)" />
               </GlassButton>
-              <TrailingButton
-                activeTab={activeTab}
-                onDownload={onDownload}
-                specsDirty={specsDirty}
-                onSaveChanges={onSaveChanges}
-              />
+              <TrailingButton activeTab={activeTab} specsDirty={specsDirty} onSaveChanges={onSaveChanges} />
             </div>
           )}
           <PropertyNav active={activeTab} onChange={onTabChange} />
